@@ -1,12 +1,12 @@
 swagger: '2.0'
 info:
-  version: '1.0'
-  title: "Parceldailydev"
-  description: Polls is a simple API allowing consumers to view polls and vote in them.
-  license:
-    name: MIT
-    url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
-host: polls.apiblueprint.org
+  version: '0.1'
+  title: "Parceldaily"
+  description: Official ParcelDaily API for partner to integrate
+  # license:
+  #   name: MIT
+  #   url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
+host: api.staging.parceldaily.com
 basePath: /
 schemes:
 - https
