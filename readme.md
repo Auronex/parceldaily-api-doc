@@ -1,5 +1,6 @@
 # ParcelDaily API Documentation
 Version: v0.1
+Technical Documentation: https://parceldaily.docs.apiary.io
 
 ## Introduction
 Welcome to ParcelDaily API :shipit:
