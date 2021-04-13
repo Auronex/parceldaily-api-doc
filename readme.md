@@ -7,23 +7,32 @@ Welcome to ParcelDaily API :shipit:
 
 **Agenda**
 1. Step to get a ParcelDaily API
-2. How to top up the credit
-3. View my order
-4. Integration workflow
-5. Courier-specific information
-6. Reference
+2. What can you do with the API
+3. How to top up the credit
+4. View my order
+5. Integration workflow
+6. Courier-specific information
+7. Reference
 
-## Step to get a ParcelDaily API
+## 1. Step to get a ParcelDaily API
 1. Register an account at partner.parceldaily.com
 2. .... //todo
 
-## How to top up the credit
+## 2. What can you do with the API
+1. Rate Checking
+2. Make order
+3. Checkout order
+4. Get order status
+5. Check parcel status
+6. Tracking
+
+## 3. How to top up the credit
 1. // todo
 
-## View my order
+## 4. View my order
 1. // todo
 
-## Courier-specific information
+## 5. Courier-specific information
 **Poslaju**
 1. The pickup cut-off time is at 12PM
 
@@ -36,5 +45,5 @@ Welcome to ParcelDaily API :shipit:
 **DHL**
 1. ...
 
-## Reference
+## 6. Reference
 1. Contact sales@parceldaily.com for more information and support
