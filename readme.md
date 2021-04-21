@@ -21,15 +21,15 @@ Refer and follow the [Technical Documentation](https://parceldaily.docs.apiary.i
 ## What Can You Do with the API
 1. Rate Checking
 
-   >This check the rates of the delivery fee for different courier services for different region and distance.
+   >Checks the rate of the delivery fee for different courier services for different region and distance.
 
 2. Make order
 
-   >Make an order to send parcel.
+   >Make an order with up to 5 choices of courier services to send your parcel to anywhere in the country.
 
 3. Checkout order
 
-   >Make payment for the order created.
+   >Make payment for the order you have made.
 
 4. Get order status
 
