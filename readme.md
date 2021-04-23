@@ -1,25 +1,42 @@
 # ParcelDaily API Documentation
 Version: v0.1
 [Technical Documentation](https://parceldaily.docs.apiary.io)
-___
+***
 
 ## Introduction
-Welcome to ParcelDaily API :shipit:
-<!-- 
-**Agenda**
-1. Step to get a ParcelDaily API
-2. What can you do with the API
-3. How to top up the credit
-4. View my order
-5. Integration workflow
-6. Courier-specific information
-7. Reference -->
+Welcome to ParcelDaily API. This API is created for ParcelDaily user to make order for sending parcel with different choices of courier services provided. It also allows user to track the status of the order or the parcel. The API not only has these functionalities, it as well allows user to perform some other actions mentioned below.
+![ParcelDailyLogo](/images/logo.png "ParcelDaily")
+
+### Outline
+1. [`How to Get a ParcelDaily API`](##How-to-Get-a-ParcelDaily-API)
+2. [`What Can You Do with the API`](##What-can-you-do-with-the-api)
+3. [`How to Top Up Credit`](##How-to-Top-Up-Credit)
+4. [`View My Order`](##View-My-Order)
+5. [`Integration workflow`](##Integration-workflow)
+6. [`Courier-specific information`](##Courier-specific-information)
+   1. [`Poslaju`](###poslaju)
+   2. [`J&T`](###j&t)
+   3. [`Ninjavan`](###ninjavan)
+   4. [`DHL`](###dhl)
+   5. [`CityLink`](###citylink)
+7. [`Reference`](##Reference)
 
 ## How to Get a ParcelDaily API
-Refer and follow the [Technical Documentation](https://parceldaily.docs.apiary.io) 
+Refer and follow the instructions given in the [Technical Documentation](https://parceldaily.docs.apiary.io). It will gives you a clear step-by-step guide.
 
 ## What Can You Do with the API
-1. Rate Checking
+| Action              | Description                                                                                           |
+|:------------------- |:----------------------------------------------------------------------------------------------------- |
+| Rate Checking       | Checks the rate of the delivery fee for different courier services for different region and distance  |
+| Make Order          | Make an order with up to 5 choices of courier services to send your parcel to anywhere in the country |
+| Checkout order      | Make payment for the order you have made                                                              |
+| Get order status    | Check the order processing status in the courier service                                              |
+| Check parcel status | Check the parcel delivering status                                                                    |
+| Tracking            | Track the parcel delivering status from the courier service                                           |
+
+<br/>
+
+<!-- 1. Rate Checking
 
    >Checks the rate of the delivery fee for different courier services for different region and distance.
 
@@ -41,7 +58,7 @@ Refer and follow the [Technical Documentation](https://parceldaily.docs.apiary.i
 
 6. Tracking
    
-   >Track the parcel delivering status from the courier service.
+   >Track the parcel delivering status from the courier service. -->
 
 ## How to Top Up Credit
 1. Register an account at partner.parceldaily.com <br/><br/>
@@ -59,22 +76,28 @@ To view all the order made in ParcelDaily, simply navigate to the [Track Status]
 
 
 ## Courier-specific Information
-**Poslaju**
-1. The pickup cut-off time is at **12PM**
+### Poslaju
+- The pickup cut-off time is at **12PM**
 
-**J&T**
-1. Order response for J&T is taking a little bit more time than other courier
+### J&T
+- The order response takes comparatively longer time than other courier services
+- City name Padang Besar Utara need to change into Padang Besar
+- All postcode in Ipoh area are 31650 (e.g: 31500 -> 31650)
+- Shipment parcel description is **NOT** supported
 
-**NinjaVan**
-1. ... //leave
+### NinjaVan
+- Generation of API token is limited to **10 times** per minute, else one will be blocked for 1 hour
+- Token validation period is dynamic ranges between 1 hour and 30 days
+- A new OAuth access token will be generated automatically 5 minutes before the token expires
 
-**DHL**
-1. ... //bala
+### DHL
+- ... //bala
 
-**CityLink**
-1. The token expires in 7 days
-<!-- 2. CityLink API **does not** return error state, the errors are 
-reflected in the return code and return message in successful state. -->
+### CityLink
+- The token renew every 7 days
+- Address lines are limited to 50 characters each
+<!-- - **DOES NOT** return error state, errors are reflected in the return code and return message in success state
+- Connote is given in base64 binary form therefore conversion is required to get the pdf version -->
 
 ## Reference
-1. Contact <sales@parceldaily.com> for more information and support
+Contact <sales@parceldaily.com> for more information and support
