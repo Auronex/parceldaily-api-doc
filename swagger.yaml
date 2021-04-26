@@ -1,120 +1,624 @@
 swagger: '2.0'
 info:
-  version: '0.1'
+  version: '1.0'
   title: "Parceldaily"
-  description: Official ParcelDaily API for partner to integrate
   # license:
   #   name: MIT
   #   url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
-host: api.staging.parceldaily.com
+  description: |
+  
+    ParcelDaily API is a RESTful API for creating the **`order`** until displaying the **`status order`**. 
+    ParcelDaily also provide the calculation of order price for every parcel. 
+   
+    ### Important Integration Requirement
+
+    Please take note of the following points:
+
+      * We require shippers to cache the **`Account Secret`** and **`Account Id`** for their API integration.
+      * **`Account Secret`** and **`Account Id`** can get in user profile
+      * Shippers are encouraged to retry order creation requests IF a **HTTP 5xx** error is returned from our API
+      * If a **HTTP 4xx** error is returned, please log the response for your debugging purposes.
+        * **Do not** retry the same order creation request without fixing the error specified in the response
+
+    ### Base URL By Environment
+
+    | Environment | Base URL  |
+    | ----------- | --------- |
+    | Production  | https://api.parceldaily.com |
+    | Sandbox     | http://localhost:1337 **(will remove when deploy latest code)** |
+    
+host: localhost:1337
 basePath: /
 schemes:
-- https
+- http
 consumes:
 - application/json
 produces:
 - application/json
 paths:
-  /questions:
-    x-summary: Questions Collection
-    get:
-      summary: List All Questions
-      responses:
-        200:
-          description: Successful Response
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Question'
-          examples:
-            application/json:
-              - question: Favourite programming language?
-                published_at: '2015-08-05T08:40:51.620Z'
-                choices:
-                  - choice: Swift
-                    votes: 2048
-                  - choice: Python
-                    votes: 1024
-                  - choice: Objective-C
-                    votes: 512
-                  - choice: Ruby
-                    votes: 256
+  /v1/partner/postcode:
+    x-summary: Check state
     post:
       description: >-
-        You may create your own question using this action. It takes a JSON
-        object containing a question and a collection of answers in the
-        form of choices.
-      summary: Create a New Question
+       Checking which state is when entering postcode.
+      summary: POST
       parameters:
+        - name: account_secret
+          in: header
+          description: a account secret
+          required: true
+          type: string
         - name: body
           in: body
           required: true
           schema:
-            $ref: '#/definitions/QuestionRequest'
+            $ref: '#/definitions/PostcodeRequest'
       responses:
-        201:
-          description: ''
+        200:
+          description: 'Successfully Responses result'
           schema:
-            $ref: '#/definitions/Question'
+            $ref: '#/definitions/Postcode'
           examples:
             application/json:
-                question: Favourite programming language?
-                published_at: '2015-08-05T08:40:51.620Z'
-                choices:
-                  - choice: Swift
-                    votes: 0
-                  - choice: Python
-                    votes: 0
-                  - choice: Objective-C
-                    votes: 0
-                  - choice: Ruby
-                    votes: 0
-definitions:
-  Question:
-    title: Question
-    type: object
-    properties:
-      question:
-        type: string
-      published_at:
-        type: string
-      choices:
-        type: array
-        items:
-          $ref: '#/definitions/Choice'
-    required:
-      - question
-      - published_at
-      - choices
-  Choice:
-    title: Choice
-    type: object
-    properties:
-      votes:
-        type: integer
-        format: int32
-      choice:
-        type: string
-    required:
-      - votes
-      - choice
-  QuestionRequest:
-    title: Question Request
-    type: object
-    properties:
-      question:
-        type: string
-      choices:
-        type: array
-        items:
+                success: 
+                  ok : true
+                  state: "Pahang"
+        401:
+          description: 'Unauthorized Responses result'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+                error: "Unauthorized"
+                message: "Secret key must be provided"
+                
+  /v1/partner/merchant/quote:
+    x-summary: Check Price
+    post:
+      description: |
+        Checking price for every parcel.
+      summary: POST
+      parameters:
+        - name: account_secret
+          in: header
+          description: a account secret
+          required: true
           type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/QuoteRequest'
+      responses:
+        200:
+          description: 'Successfully Responses result'
+          schema:
+            $ref: '#/definitions/Quote'
+          examples:
+            application/json:
+                success: 
+                  pricing: [
+                    {
+                      Id: 1,
+                      Region: "WTW",
+                      State: "",
+                      min: 0.001,
+                      max: 1,
+                      citylink: 6.5,
+                      dhl: 6.5,
+                      poslaju: 7.5,
+                      jnt: 6,
+                      ninjavan: 6.5
+                    },
+                  ]
+        422:
+          description: 'Empty value Responses result'
+          examples:
+            application/json:
+                error: {
+                  destination: [
+                    "Should not be empty",
+                    "Does not fulfill requirement: isLength"
+                  ]
+                }
+        401:
+          description: 'Unauthorized Responses result'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+                error: "Unauthorized"
+                message: "Secret key must be provided"
+  
+  /v1/partner/order/create:
+    x-summary: Create Order
+    post:
+      description: |
+        Creates a new order.
+        
+        _**NOTE**_: Please take note that the `price` value must be same with the checking price API.
+      summary: POST
+      parameters:
+        - name: account_secret
+          in: header
+          description: a account secret
+          required: true
+          type: string
+        - name: account_id
+          in: header
+          description: a account id
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/CreateOrderRequest'
+      responses:
+        200:
+          description: 'Successfully Responses result'
+          schema:
+            $ref: '#/definitions/CreateOrder'
+          examples:
+            application/json:
+                success: {
+                  serviceProvider: "dhl",
+                  merchant: {
+                      name: "Auronex ",
+                      BRN: "002074755",
+                      memberType: "Normal",
+                      package: {
+                          __type: "Pointer",
+                          className: "Package",
+                          objectId: "KNPjuvbgHo"
+                      },
+                      createdAt: "2020-11-24T07:39:59.033Z",
+                      updatedAt: "2021-04-20T03:37:32.656Z",
+                      phone: "0179339876",
+                      bankName: "Maybank",
+                      bankAccount: "7125642365",
+                      totalTopup: 3,
+                      credits: 53208.6,
+                      objectId: "scsMoA9S1N",
+                      __type: "Object",
+                     className: "Merchant"
+                  },
+                  price: 6.5,
+                  content_value: 2,
+                  receiver: {
+                      email: "ahmad@gmail.com",
+                      merchant: {
+                          __type: "Pointer",
+                          className: "Merchant",
+                          objectId: "scsMoA9S1N"
+                      },
+                      city: "Kuantan",
+                      postcode: "25200",
+                      phone: "60125875469",
+                      state: "Pahang",
+                      fullName: "ahmad",
+                      line1: "No.10, Jalan Besar 12,",
+                      line2: "Taman E",
+                      createdAt: "2020-11-24T08:20:03.924Z",
+                      updatedAt: "2020-12-23T13:04:00.596Z",
+                      objectId: "ZgM2i48XNF",
+                      __type: "Object",
+                      className: "ClientAddress"
+                  },
+                  content: "2",
+                  kg: 2,
+                  cod: null,
+                  pickup: {
+                      merchant: {
+                          __type: "Pointer",
+                          className: "Merchant",
+                          objectId: "scsMoA9S1N"
+                      },
+                      email: "wanmuhdamin@gmail.com",
+                      city: "Kuantan",
+                      postcode: "25200",
+                      phone: "60135785469",
+                      state: "Pahang",
+                      fullName: "Wan",
+                      line1: "No.12, Lororng IM12/16,",
+                      line2: "Taman Alam Perdana",
+                      createdAt: "2020-11-24T08:20:03.718Z",
+                      updatedAt: "2021-04-09T11:50:18.645Z",
+                      objectId: "3G4KCnNw9f",
+                      __type: "Object",
+                      className: "Address"
+                  },
+                  createdAt: "2021-04-20T04:15:24.225Z",
+                  updatedAt: "2021-04-20T04:15:24.225Z",
+                  objectId: "ykBc5wQuWw"
+                }
+        422:
+          description: 'Server calculated price does not match submitted price'
+          examples:
+            application/json:
+                error: {}
+        401:
+          description: 'Unauthorized Responses result'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+                error: "Unauthorized"
+                message: "Secret key must be provided"
+                
+  /v1/partner/order/payAll:
+    x-summary: Pay Order
+    post:
+      description: >-
+        Making payment for the selected order.
+      summary: POST
+      parameters:
+        - name: account_secret
+          in: header
+          description: a account secret
+          required: true
+          type: string
+        - name: account_id
+          in: header
+          description: a account id
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/PayOrderRequest'
+      responses:
+        200:
+          description: 'Successfully Responses result'
+          schema:
+            $ref: '#/definitions/PayOrder'
+          examples:
+            application/json:
+                success: [
+                  "sfMeOuzvtK"
+                ]
+        500:
+          description: 'Object not found'
+          examples:
+            application/json:
+                error: {
+                  message: "Object not found.",
+                  code: 101
+                }
+        401:
+          description: 'Unauthorized Responses result'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+                error: "Unauthorized"
+                message: "Secret key must be provided"
+                
+  /v1/partner/orders:
+    x-summary: Get all order
+    get:
+      description: >-
+        Display all purchases order.
+      summary: GET
+      parameters:
+        - name: account_secret
+          in: header
+          description: a account secret
+          required: true
+          type: string
+        - name: account_id
+          in: header
+          description: a account id
+          required: true
+          type: string
+      responses:
+        200:
+          description: 'Successfully Responses result'
+          examples:
+            application/json:
+                orders: [
+                  {
+                    consignNote: "5520120314210252",
+                    name: "Auronex",
+                    receiver: "Jonny",
+                    pickup: "Alex",
+                    pickupEmail: "test@example.com",
+                    content: "item",
+                    receiverAddress: {
+                        line1: "No 5, Jalan Impian 4",
+                        city: "Selangor",
+                        postcode: "47000",
+                        phone: "60120101010",
+                    },
+                    pickupAddress: {
+                        line1: "No.12, Lororng I 2/1,",
+                        line2: "Taman A",
+                        city: "Kuantan",
+                        postcode: "25200"
+                    },
+                    orderId: "GSP5EcMGg6",
+                    orderStatus: "Waiting Pickup",
+                    orderLastUpdateStatus: "2021-03-18T18:10:54.713Z",
+                    orderLastUpdateStatusDiffDay: 31,
+                    kg: 5,
+                    price: 19.3,
+                    cod: 50,
+                    paid: true,
+                    serviceProvider: "dhl",
+                    archived: "",
+                    createdAt: "2021-03-18T12:45:43.016Z",
+                    weight: 5,
+                    receiverState: "Selangor",
+                    pickupState: "Pahang"
+                  }
+                ]
+        401:
+          description: 'Unauthorized Responses result'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+                error: "Unauthorized"
+                message: "Secret key must be provided"
+                
+  /v1/partner/track/:
+    x-summary: Tracking order status
+    post:
+      description: >-
+        Tracking order.
+      summary: POST
+      parameters:
+        - name: account_secret
+          in: header
+          description: a account secret
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/TrackOrderRequest'
+      responses:
+        200:
+          description: 'Successfully Responses result'
+          schema:
+            $ref: '#/definitions/TrackOrder'
+          examples:
+            application/json:
+                ninjavan: [
+                  {
+                    consign_no: "NVMYAXVEL000001063",
+                    serviceProvider: "ninjavan",
+                    status: "Waiting Pickup",
+                    lastUpdateStatus: "2021-04-20T10:14:06.476Z"
+                  }
+                ]
+        401:
+          description: 'Unauthorized Responses result'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+                error: "Unauthorized"
+                message: "Secret key must be provided"
+                      
+                
+                    
+definitions:
+  Postcode:
+    title: Postcode
+    type: object
+    properties:
+      ok:
+        type: string
+        description: >- 
+          Result correct
+      state:
+        type: string
+        description: >- 
+          Malaysia state
     required:
-      - question
-      - choices
+      - ok
+      - state
+  PostcodeRequest:
+    title: Postcode Request
+    type: object
+    properties:
+      postcode:
+        type: string
+        description: | 
+          * Must be malaysia postcode 
+          * Must be 5 digit postcode
+    required:
+      - postcode
     example:
-      question: Favourite programming language?
-      choices:
-        - Swift
-        - Python
-        - Objective-C
-        - Ruby
+      postcode: "25200"
+      
+  Quote:
+    title: Quote
+    type: object
+    # properties:
+    #   origin:
+    #     type: integer
+    #   destination:
+    #     type: integer
+    #   weight:
+    #     type: integer
+    #   cod:
+    #     type: integer
+    # required:
+    #   - origin
+    #   - destination
+    #   - weight
+  QuoteRequest:
+    title: Quote Request
+    type: object
+    properties:
+      origin:
+        type: integer
+        description: | 
+          Postcode from destination
+          * Must be malaysia postcode 
+          * Must be 5 digit postcode
+      destination:
+        type: integer
+        description: | 
+          Postcode to destination
+          * Must be malaysia postcode 
+          * Must be 5 digit postcode
+      weight:
+        type: integer
+        description: | 
+          Weight of parcel
+          * Must not more than 30kg
+      cod:
+        type: integer
+        description: >- 
+          Cash On Delivery price
+    required:
+      - origin
+      - destination
+      - weight
+    example:
+      origin : 25200
+      destination : 25200
+      weight : 2
+      cod : 0
+  
+  CreateOrder:
+    title: Create Order
+    type: object
+    # properties:
+    #   serviceProvider:
+    #     type: string
+    #   pickupAddress:
+    #     type: string
+    #   clientAddress:
+    #     type: string
+    #   kg:
+    #     type: integer
+    #   price:
+    #     type: integer
+    #   content:
+    #     type: string
+    #   content_value:
+    #     type: integer
+    #   cod:
+    #     type: integer
+    # required:
+    #   - serviceProvider
+    #   - pickupAddress
+    #   - clientAddress
+    #   - kg
+    #   - price
+    #   - content
+    #   - content_value
+  CreateOrderRequest:
+    title: Create Order Request
+    type: object
+    properties:
+      serviceProvider:
+        type: string
+        description: >- 
+          Type of parcel
+      pickupAddress:
+        type: string
+        description: >-
+          Address id 
+      clientAddress:
+        type: string
+        description: >-
+          Client Address id 
+      kg:
+        type: integer
+        description: >-
+          Weight of parcel 
+      price:
+        type: integer
+        description: >-
+          Get the price from quotation api
+      content:
+        type: string
+        description: >-
+          Pracel detail description
+      content_value:
+        type: integer
+        description: >-
+          Parcel detail value 
+      cod:
+        type: integer
+        description: >-
+          Cash On Delivery Price 
+    required:
+      - serviceProvider
+      - pickupAddress
+      - clientAddress
+      - kg
+      - price
+      - content
+      - content_value
+    example:
+      serviceProvider : "dhl"
+      pickupAddress : "3G4KCnNw9f"
+      clientAddress : "ZgM2i48XNF"
+      kg : 2
+      price : 6.5
+      content : "2"
+      content_value : 2
+      cod : null
+  
+  PayOrder:
+    title: Pay All Order
+    type: object
+    properties:
+      success:
+        type: array
+        description: >- 
+          List of order id that successfully pay
+    required:
+      - success
+  PayOrderRequest:
+    title: Get All Order Request
+    type: object
+    properties:
+      orderIds:
+        type: array
+        description: >-
+          Order Id that want to make purchase
+    required:
+      - orderIds
+    example:
+      orderIds: [
+        sfMeOuzvtK
+      ]
+  
+  TrackOrder:
+    title: Track Order
+    type: object
+    # properties:
+    #   parcel:
+    #     type: string
+    # required:
+    #   - parcel
+  TrackOrderRequest:
+    title: Track Order Request
+    type: object
+    properties:
+      parcel:
+        type: string
+        description: >-
+          Parcel tracking number
+    required:
+      - parcel
+    example:
+      parcel: NVMYAXVEL000001063
+      
+  Error:
+    type: object
+    properties:
+      error:
+        type: string
+      message:
+        type: string
+  
