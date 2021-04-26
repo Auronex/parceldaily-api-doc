@@ -4,7 +4,7 @@ Version: v0.1
 ***
 
 ## Introduction
-Welcome to ParcelDaily API. This API is created for ParcelDaily user to make order for sending parcel with different choices of courier services provided. It also allows user to track the status of the order or the parcel. The API not only has these functionalities, it as well allows user to perform some other actions mentioned below.
+Welcome to ParcelDaily API. This API is created for ParcelDaily users to make orders for sending parcels with different choices of courier services provided. It also allows users to track the status of the order or the parcel. The API not only has these functionalities, it as well allows users to perform some other actions mentioned below. 
 ![ParcelDailyLogo](/images/logo.png "ParcelDaily")
 
 ### Outline
@@ -67,7 +67,7 @@ Refer and follow the instructions given in the [Technical Documentation](https:/
 ![Login Page](/images/login.gif "Login page")<br/><br/>
 3. Navigate to the [Top Up](http://partner.parceldaily.com/profile/top-up) page in the side navigation bar **or** 
 click on the Top Up button in Dashboard page<br/><br/>
-![Navbar TopUp](/images/navbar_topup.jpeg "Top Up page in navigation bar")  ![Dashboard TopUp](/images/dashboard_topup.jpeg "Top Up button in dashboard")<br/><br/>
+![Navbar TopUp](/images/navbar_topup.jpeg "Top Up page in navigation bar")   ![Dashboard TopUp](/images/dashboard_topup.jpeg "Top Up button in dashboard")<br/><br/>
 
 
 ## View My Order
@@ -85,16 +85,16 @@ To view all the order made in ParcelDaily, simply navigate to the [Track Status]
 - All postcode in Ipoh area are 31650 (e.g: 31500 -> 31650)
 - Shipment parcel description is **NOT** supported
 
-### NinjaVan
+<!-- ### NinjaVan
 - Generation of API token is limited to **10 times** per minute, else one will be blocked for 1 hour
 - Token validation period is dynamic ranges between 1 hour and 30 days
-- A new OAuth access token will be generated automatically 5 minutes before the token expires
+- A new OAuth access token will be generated automatically 5 minutes before the token expires -->
 
-### DHL
-- ... //bala
+<!-- ### DHL
+-  -->
 
 ### CityLink
-- The token renew every 7 days
+<!-- - The token renew every 7 days -->
 - Address lines are limited to 50 characters each
 <!-- - **DOES NOT** return error state, errors are reflected in the return code and return message in success state
 - Connote is given in base64 binary form therefore conversion is required to get the pdf version -->
