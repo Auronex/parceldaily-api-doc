@@ -16,9 +16,9 @@ Welcome to ParcelDaily API. This API is created for ParcelDaily users to make or
 6. [`Courier-specific information`](##Courier-specific-information)
    1. [`Poslaju`](###poslaju)
    2. [`J&T`](###j&t)
-   3. [`Ninjavan`](###ninjavan)
-   4. [`DHL`](###dhl)
-   5. [`CityLink`](###citylink)
+   <!-- 3. [`Ninjavan`](###ninjavan)
+   4. [`DHL`](###dhl) -->
+   3. [`CityLink`](###citylink)
 7. [`Reference`](##Reference)
 
 ## How to Get a ParcelDaily API
@@ -67,7 +67,7 @@ Refer and follow the instructions given in the [Technical Documentation](https:/
 ![Login Page](/images/login.gif "Login page")<br/><br/>
 3. Navigate to the [Top Up](http://partner.parceldaily.com/profile/top-up) page in the side navigation bar **or** 
 click on the Top Up button in Dashboard page<br/><br/>
-![Navbar TopUp](/images/navbar_topup.jpeg "Top Up page in navigation bar")   ![Dashboard TopUp](/images/dashboard_topup.jpeg "Top Up button in dashboard")<br/><br/>
+![Navbar TopUp](/images/navbar_topup.jpeg "Top Up page in navigation bar")      ![Dashboard TopUp](/images/dashboard_topup.jpeg "Top Up button in dashboard")<br/><br/>
 
 
 ## View My Order
