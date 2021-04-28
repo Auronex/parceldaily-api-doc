@@ -22,8 +22,8 @@ Welcome to ParcelDaily API. This API is created for ParcelDaily users to make or
 7. [`Reference`](##Reference)
 
 ## How to Get a ParcelDaily API
-Refer and follow the instructions given in the [Technical Documentation](https://parceldaily.docs.apiary.io). It will gives you a clear step-by-step guide.
-
+Refer and follow the instructions given in the [Technical Documentation](https://parceldaily.docs.apiary.io). It will gives you a clear step-by-step guide.<br/><br/>
+![Integration Workflow](/images/integration_workflow.jpg)
 ## What Can You Do with the API
 | Action              | Description                                                                                           |
 |:------------------- |:----------------------------------------------------------------------------------------------------- |
