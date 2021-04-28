@@ -1,5 +1,5 @@
 # ParcelDaily API Documentation
-Version: v0.1
+Version: v1.0 <br/>
 [Technical Documentation](https://parceldaily.docs.apiary.io)
 ***
 
