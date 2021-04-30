@@ -23,8 +23,8 @@ Welcome to ParcelDaily API. This API is created for ParcelDaily users to make or
   - [Reference](#reference)
    <!-- 3. [`Ninjavan`](###ninjavan)
    4. [`DHL`](###dhl) -->
-   3. [`CityLink`](###citylink)
-7. [`Reference`](##Reference)
+   <!-- 3. [`CityLink`](###citylink) -->
+<!-- 7. [`Reference`](##Reference) -->
 
 ## How to Get a ParcelDaily API [Sandbox]
 If you dont have account yet to get `Token` and `Merchant Id`, you can try use this credential. <br/>
