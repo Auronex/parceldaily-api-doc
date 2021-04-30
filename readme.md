@@ -4,7 +4,7 @@ Version: v1.0 <br/>
 ***
 
 ## Introduction
-Welcome to ParcelDaily API. This API is created for ParcelDaily users to make orders for sending parcels with different choices of courier services provided. It also allows users to track the status of the order or the parcel. The API not only has these functionalities, it as well allows users to perform some other actions mentioned below. 
+Welcome to ParcelDaily API. This API is created for ParcelDaily users to make orders for sending parcels with different choices of courier services provided. It also allows users to track the status of the order or the parcel. The API not only has these functionalities, it as well allows users to perform some other actions mentioned in the following sections. All the JSON files are provided in this repository under `constants` folder.
 ![ParcelDailyLogo](/images/logo.png "ParcelDaily")
 
 ### Outline
@@ -23,11 +23,14 @@ Welcome to ParcelDaily API. This API is created for ParcelDaily users to make or
   - [Reference](#reference)
    <!-- 3. [`Ninjavan`](###ninjavan)
    4. [`DHL`](###dhl) -->
-   3. [`CityLink`](###citylink)
-7. [`Reference`](##Reference)
+   <!-- 3. [`CityLink`](###citylink) -->
+<!-- 7. [`Reference`](##Reference) -->
 
 ## How to Get a ParcelDaily API [Sandbox]
-// insert here
+If you dont have account yet to get `Token` and `Merchant Id`, you can try use this credential. <br/>
+| Merchant Id | Token |
+|:------------|:------|
+| 8VqGyrqYCQ  | 950af98c-f033-4cdd-ae8a-82db543a3efe |
 
 ## How to Get a ParcelDaily API [Production]
 Refer and follow the instructions given in the [Technical Documentation](https://parceldaily.docs.apiary.io). It will gives you a clear step-by-step guide.<br/><br/>
@@ -107,5 +110,6 @@ To view all the order made in ParcelDaily, simply navigate to the [Track Status]
 <!-- - **DOES NOT** return error state, errors are reflected in the return code and return message in success state
 - Connote is given in base64 binary form therefore conversion is required to get the pdf version -->
 
+##### **ONLY DHL and Ninjavan support Cash On Delivery
 ## Reference
 Contact <sales@parceldaily.com> for more information and support
