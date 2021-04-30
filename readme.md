@@ -8,20 +8,28 @@ Welcome to ParcelDaily API. This API is created for ParcelDaily users to make or
 ![ParcelDailyLogo](/images/logo.png "ParcelDaily")
 
 ### Outline
-1. [`How to Get a ParcelDaily API`](##How-to-Get-a-ParcelDaily-API)
-2. [`What Can You Do with the API`](##What-can-you-do-with-the-api)
-3. [`How to Top Up Credit`](##How-to-Top-Up-Credit)
-4. [`View My Order`](##View-My-Order)
-5. [`Integration workflow`](##Integration-workflow)
-6. [`Courier-specific information`](##Courier-specific-information)
-   1. [`Poslaju`](###poslaju)
-   2. [`J&T`](###j&t)
+- [ParcelDaily API Documentation](#parceldaily-api-documentation)
+  - [Introduction](#introduction)
+    - [Outline](#outline)
+  - [How to Get a ParcelDaily API [Sandbox]](#how-to-get-a-parceldaily-api-sandbox)
+  - [How to Get a ParcelDaily API [Production]](#how-to-get-a-parceldaily-api-production)
+  - [What Can You Do with the API](#what-can-you-do-with-the-api)
+  - [How to Top Up Credit](#how-to-top-up-credit)
+  - [View My Order](#view-my-order)
+  - [Courier-specific Information](#courier-specific-information)
+    - [Poslaju](#poslaju)
+    - [J&T](#jt)
+    - [CityLink](#citylink)
+  - [Reference](#reference)
    <!-- 3. [`Ninjavan`](###ninjavan)
    4. [`DHL`](###dhl) -->
    3. [`CityLink`](###citylink)
 7. [`Reference`](##Reference)
 
-## How to Get a ParcelDaily API
+## How to Get a ParcelDaily API [Sandbox]
+// insert here
+
+## How to Get a ParcelDaily API [Production]
 Refer and follow the instructions given in the [Technical Documentation](https://parceldaily.docs.apiary.io). It will gives you a clear step-by-step guide.<br/><br/>
 ![Integration Workflow](/images/integration_workflow.jpg)
 ## What Can You Do with the API
