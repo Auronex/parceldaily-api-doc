@@ -8,29 +8,38 @@ info:
   description: |
   
     ParcelDaily API is a RESTful API for creating the **`order`** until displaying the **`status order`**. 
-    ParcelDaily also provide the calculation of order price for every parcel. 
+    ParcelDaily also provide the calculation of order price for every parcel. You can refer to `https://github.com/Auronex/parceldaily-api-doc` to read more about integration guideline and info.
    
     ### Important Integration Requirement
 
     Please take note of the following points:
 
-      * We require shippers to cache the **`Account Secret`** and **`Account Id`** for their API integration.
-      * **`Account Secret`** and **`Account Id`** can get in user profile
+      * We require shippers to cache the **`Token`** and **`Merchant Id`** for their API integration.
+      * We suggest shippers to cache the downloaded consignment note as well. Please let our sales team know if you are not caching the consignment note at your end.
+      * **`Token`** and **`Merchant Id`** can get in user profile
       * Shippers are encouraged to retry order creation requests IF a **HTTP 5xx** error is returned from our API
       * If a **HTTP 4xx** error is returned, please log the response for your debugging purposes.
         * **Do not** retry the same order creation request without fixing the error specified in the response
-
+      * This API documentation is at version 1.0, we are always in a process of making our API more developer friendly as we all are developer. If you find any error message is not descriptive or missing error message, please send an email to sales@parceldaily.com
+    
+    
+    _**NOTE**_: If you don't have account yet to get **`Token`** and **`Merchant Id`**, you can try use this credential
+    
+    | Merchant Id | Token  |
+    | ----------- | ------------ |
+    | 8VqGyrqYCQ  | 950af98c-f033-4cdd-ae8a-82db543a3efe |
+    
     ### Base URL By Environment
 
     | Environment | Base URL  |
     | ----------- | --------- |
     | Production  | https://api.parceldaily.com |
-    | Sandbox     | http://localhost:1337 **(will remove when deploy latest code)** |
+    | Sandbox     | https://api.sandbox.parceldaily.com |
     
-host: localhost:1337
+host: api.sandbox.parceldaily.com
 basePath: /
 schemes:
-- http
+- https
 consumes:
 - application/json
 produces:
@@ -40,10 +49,10 @@ paths:
     x-summary: Check state
     post:
       description: >-
-       Checking which state is when entering postcode.
+       Get the state of a postcode in Malaysia
       summary: POST
       parameters:
-        - name: account_secret
+        - name: token
           in: header
           description: a account secret
           required: true
@@ -73,13 +82,13 @@ paths:
                 message: "Secret key must be provided"
                 
   /v1/partner/merchant/quote:
-    x-summary: Check Price
+    x-summary: Rate Checking
     post:
       description: |
-        Checking price for every parcel.
+        Get the quote of a order. This API will return different rate depending your user/package tier. Please refer to sales team for more information about the rate
       summary: POST
       parameters:
-        - name: account_secret
+        - name: token
           in: header
           description: a account secret
           required: true
@@ -97,22 +106,33 @@ paths:
           examples:
             application/json:
                 success: 
-                  pricing: [
-                    {
-                      Id: 1,
-                      Region: "WTW",
-                      State: "",
-                      min: 0.001,
-                      max: 1,
-                      citylink: 6.5,
-                      dhl: 6.5,
-                      poslaju: 7.5,
-                      jnt: 6,
-                      ninjavan: 6.5
-                    },
-                  ]
+                  fromPostcode:  
+                    Postcode: 25200
+                    Place: "Bandar Indera Mahkota"
+                    Area: "Kuantan"
+                    State: "PHG"
+                    StateName: "Pahang"
+                  toPostcode: 
+                    Postcode: 25200
+                    Place: "Bandar Indera Mahkota"
+                    Area: "Kuantan"
+                    State: "PHG"
+                    StateName: "Pahang"
+                  totalPrice: "6.50"
+                  cod: 2
+                  dhlPrice: "11.80"
+                  dhlCod: "5.30"
+                  dhlPostage: "11.80"
+                  nvPrice: "14.00"
+                  nvCod: "5.00"
+                  nvPostage: "9.00"
+                  jntPrice: "8.00"
+                  citylinkPrice: "9.00"
+                
         422:
           description: 'Empty value Responses result'
+          schema:
+            $ref: '#/definitions/ErrorEmpty'
           examples:
             application/json:
                 error: {
@@ -134,17 +154,17 @@ paths:
     x-summary: Create Order
     post:
       description: |
-        Creates a new order.
+        Creates a new order. When a order is create, it means added into cart. You will need to call Checkout API to checkout the order.
         
         _**NOTE**_: Please take note that the `price` value must be same with the checking price API.
       summary: POST
       parameters:
-        - name: account_secret
+        - name: token
           in: header
           description: a account secret
           required: true
           type: string
-        - name: account_id
+        - name: merchantid
           in: header
           description: a account id
           required: true
@@ -247,18 +267,18 @@ paths:
                 message: "Secret key must be provided"
                 
   /v1/partner/order/payAll:
-    x-summary: Pay Order
+    x-summary: Checkout Order
     post:
       description: >-
-        Making payment for the selected order.
+        Making payment for the selected order. Please make sure you have enough credit in the wallet for better integration.
       summary: POST
       parameters:
-        - name: account_secret
+        - name: token
           in: header
           description: a account secret
           required: true
           type: string
-        - name: account_id
+        - name: merchantid
           in: header
           description: a account id
           required: true
@@ -296,18 +316,18 @@ paths:
                 message: "Secret key must be provided"
                 
   /v1/partner/orders:
-    x-summary: Get all order
+    x-summary: Get all orders
     get:
       description: >-
-        Display all purchases order.
+        Get all purchases order and their description.
       summary: GET
       parameters:
-        - name: account_secret
+        - name: token
           in: header
           description: a account secret
           required: true
           type: string
-        - name: account_id
+        - name: merchantid
           in: header
           description: a account id
           required: true
@@ -363,13 +383,13 @@ paths:
                 message: "Secret key must be provided"
                 
   /v1/partner/track/:
-    x-summary: Tracking order status
+    x-summary: Tracking
     post:
       description: >-
         Tracking order.
       summary: POST
       parameters:
-        - name: account_secret
+        - name: token
           in: header
           description: a account secret
           required: true
@@ -402,6 +422,47 @@ paths:
             application/json:
                 error: "Unauthorized"
                 message: "Secret key must be provided"
+  
+  /v1/partner/consign-pdf/:
+    x-summary: Download Consignment Note
+    post:
+      description: >-
+        Download the consignment note through signed URL. The signed URL will be expired upon visiting.
+      summary: POST
+      parameters:
+        - name: token
+          in: header
+          description: a account secret
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/DownloadConnoteRequest'
+      responses:
+        200:
+          description: 'Successfully Responses result'
+          # schema:
+          #   $ref: '#/definitions/DownloadConnote'
+          # examples:
+          #   application/json:
+          #       ninjavan: [
+          #         {
+          #           consign_no: "NVMYAXVEL000001063",
+          #           serviceProvider: "ninjavan",
+          #           status: "Waiting Pickup",
+          #           lastUpdateStatus: "2021-04-20T10:14:06.476Z"
+          #         }
+          #       ]
+        401:
+          description: 'Unauthorized Responses result'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+                error: "Unauthorized"
+                message: "Secret key must be provided"
                       
                 
                     
@@ -410,24 +471,24 @@ definitions:
     title: Postcode
     type: object
     properties:
-      ok:
-        type: string
-        description: >- 
-          Result correct
-      state:
-        type: string
-        description: >- 
-          Malaysia state
-    required:
-      - ok
-      - state
+      success:
+        type: object
+        properties:
+          ok:
+            type: string
+            description: >-
+              Result correct
+          state:
+            type: string
+            description: >-
+              Malaysia state
   PostcodeRequest:
     title: Postcode Request
     type: object
     properties:
       postcode:
         type: string
-        description: | 
+        description: |
           * Must be malaysia postcode 
           * Must be 5 digit postcode
     required:
@@ -438,44 +499,122 @@ definitions:
   Quote:
     title: Quote
     type: object
-    # properties:
-    #   origin:
-    #     type: integer
-    #   destination:
-    #     type: integer
-    #   weight:
-    #     type: integer
-    #   cod:
-    #     type: integer
-    # required:
-    #   - origin
-    #   - destination
-    #   - weight
+    properties:
+      success:
+        type: object
+        properties:
+          fromoPostcode:
+            type: object
+            properties:
+              Postcode:
+                type: string
+                description: >-
+                  Malaysia postcode
+              Place:
+                type: string
+                description: >-
+                  Name of place
+              Area:
+                type: string
+                description: >-
+                  Name of city
+              State:
+                type: string
+                description: >-
+                  Short name of state
+              StateName:
+                type: string
+                description: >-
+                  Name of state
+          toPostcode:
+            type: object
+            properties:
+              Postcode:
+                type: string
+                description: >-
+                  Malaysia postcode
+              Place:
+                type: string
+                description: >-
+                  Name of place
+              Area:
+                type: string
+                description: >-
+                  Name of city
+              State:
+                type: string
+                description: >-
+                  Short name of state
+              StateName:
+                type: string
+                description: >-
+                  Name of state
+          poslajuPrice:
+            type: string
+            description: >-
+              Price for poslaju
+          cod:
+            type: string
+            description: >-
+              COD price
+          dhlPrice:
+            type: string
+            description: >-
+              Price for dhl
+          dhlCod:
+            type: string
+            description: >-
+              Price dhl charge for COD
+          dhlPostage:
+            type: string
+            description: >-
+              Price dhl without including COD
+          nvPrice:
+            type: string
+            description: >-
+              Price for ninjavan
+          nvCod:
+            type: string
+            description: >-
+              Price ninjavan charge for COD
+          nvPostage:
+            type: string
+            description: >-
+              Price ninjavan without including COD
+          jntPrice:
+            type: string
+            description: >-
+              Price for j&t
+          citylinkPrice:
+            type: string
+            description: >-
+              Price for citylink
   QuoteRequest:
     title: Quote Request
     type: object
     properties:
       origin:
         type: integer
-        description: | 
+        description: |
           Postcode from destination
           * Must be malaysia postcode 
           * Must be 5 digit postcode
       destination:
         type: integer
-        description: | 
+        description: |
           Postcode to destination
           * Must be malaysia postcode 
           * Must be 5 digit postcode
       weight:
         type: integer
-        description: | 
+        # maximum: 30
+        description: |
           Weight of parcel
-          * Must not more than 30kg
       cod:
         type: integer
-        description: >- 
-          Cash On Delivery price
+        # maximum: 4000
+        description: |
+          Cash On Delivery Price 
     required:
       - origin
       - destination
@@ -489,38 +628,65 @@ definitions:
   CreateOrder:
     title: Create Order
     type: object
-    # properties:
-    #   serviceProvider:
-    #     type: string
-    #   pickupAddress:
-    #     type: string
-    #   clientAddress:
-    #     type: string
-    #   kg:
-    #     type: integer
-    #   price:
-    #     type: integer
-    #   content:
-    #     type: string
-    #   content_value:
-    #     type: integer
-    #   cod:
-    #     type: integer
-    # required:
-    #   - serviceProvider
-    #   - pickupAddress
-    #   - clientAddress
-    #   - kg
-    #   - price
-    #   - content
-    #   - content_value
+    properties:
+      success:
+        type: object
+        properties:
+          serviceProvider:
+            type: string
+            description: |
+              Type of parcel
+          merchant:
+            type: object
+            description: |
+              Merchant info
+          price:
+            type: integer
+            description: |
+              Total Price
+          content_value:
+            type: string
+            description: |
+              Value of parcel
+          receiver:
+            type: object
+            description: |
+              Receiver info
+          content:
+            type: string
+            description: |
+              Parcel discription
+          kg:
+            type: integer
+            description: |
+              Weight of parcel
+          cod:
+            type: string
+            description: |
+              COD price
+          pickup:
+            type: object
+            description: |
+              Pickup info
+          createAt:
+            type: string
+            description: |
+              Datetime of parcel created
+          updateAt:
+            type: string
+            description: |
+              Datetime of parcel created
+          objectId:
+            type: string
+            description: |
+              Order ID
   CreateOrderRequest:
     title: Create Order Request
     type: object
     properties:
       serviceProvider:
         type: string
-        description: >- 
+        description: >-
           Type of parcel
       pickupAddress:
         type: string
@@ -548,8 +714,9 @@ definitions:
           Parcel detail value 
       cod:
         type: integer
-        description: >-
+        description: |
           Cash On Delivery Price 
+          * The price must not more than RM4000
     required:
       - serviceProvider
       - pickupAddress
@@ -560,8 +727,8 @@ definitions:
       - content_value
     example:
       serviceProvider : "dhl"
-      pickupAddress : "3G4KCnNw9f"
-      clientAddress : "ZgM2i48XNF"
+      pickupAddress : "FBDlfCguaZ"
+      clientAddress : "PK7zhDeZpL"
       kg : 2
       price : 6.5
       content : "2"
@@ -574,10 +741,8 @@ definitions:
     properties:
       success:
         type: array
-        description: >- 
+        description: >-
           List of order id that successfully pay
-    required:
-      - success
   PayOrderRequest:
     title: Get All Order Request
     type: object
@@ -596,29 +761,88 @@ definitions:
   TrackOrder:
     title: Track Order
     type: object
-    # properties:
-    #   parcel:
-    #     type: string
-    # required:
-    #   - parcel
+    properties:
+      ninjavan:
+        type: array
+        description: >-
+          Parcel type
+        items:
+          type: object
+          properties:
+            consign_no:
+              type: string
+              description: >-
+                Consignment number of tracking 
+            serviceProvider:
+              type: string
+              description: >-
+                Type of parcel 
+            status:
+              type: string
+              description: >-
+                Parcel status
+            lastUpdatesStatus:
+              type: string
+              description: >-
+                Datetime for updated parcel status 
   TrackOrderRequest:
     title: Track Order Request
     type: object
     properties:
-      parcel:
+      connote:
         type: string
         description: >-
           Parcel tracking number
     required:
-      - parcel
+      - connote
     example:
-      parcel: NVMYAXVEL000001063
+      connote: NVMYAXVEL000001063
+      
+  DownloadConnote:
+    title: Download Connote
+    type: object
+    # properties:
+    #   connote:
+    #     type: string
+    # required:
+    #   - connote
+  DownloadConnoteRequest:
+    title: Download Connote Request
+    type: object
+    properties:
+      connote:
+        type: string
+        description: >-
+          Parcel tracking number
+    required:
+      - connote
+    example:
+      connote: NVMYAXVEL000001063
       
   Error:
     type: object
     properties:
       error:
         type: string
+        description: >-
+          Type of errorr
       message:
         type: string
+        description: >-
+          Error message
+  
+  ErrorEmpty:
+    type: object
+    properties:
+      error:
+        type: object
+        description: >-
+          Attribute that contain error  
+        properties:
+          destination:
+            type: array
+            items:
+              type: string
+              description: >-
+                Error message
   
