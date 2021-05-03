@@ -27,7 +27,7 @@ Welcome to ParcelDaily API. This API is created for ParcelDaily users to make or
 <!-- 7. [`Reference`](##Reference) -->
 
 ## How to Get a ParcelDaily API [Sandbox]
-If you dont have account yet to get `Token` and `Merchant Id`, you can try use this credential. <br/>
+Please contact your account manager to assign a Sandbox **`Token`** and **`Merchant Id`** for your account. If you are here for play around, you can try use this credential for quick test purpose.<br/>
 | Merchant Id | Token |
 |:------------|:------|
 | 8VqGyrqYCQ  | 950af98c-f033-4cdd-ae8a-82db543a3efe |
