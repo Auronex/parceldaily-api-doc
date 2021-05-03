@@ -23,7 +23,7 @@ info:
       * This API documentation is at version 1.0, we are always in a process of making our API more developer friendly as we all are developer. If you find any error message is not descriptive or missing error message, please send an email to sales@parceldaily.com
     
     
-    _**NOTE**_: If you don't have account yet to get **`Token`** and **`Merchant Id`**, you can try use this credential
+    _**NOTE**_: Please contact your account manager to assign a Sandbox **`Token`** and **`Merchant Id`** for your account. If you are here for play around, you can try use this credential for quick test purpose. 
     
     | Merchant Id | Token  |
     | ----------- | ------------ |
@@ -91,6 +91,11 @@ paths:
         - name: token
           in: header
           description: a account secret
+          required: true
+          type: string
+        - name: merchantid
+          in: header
+          description: a account id
           required: true
           type: string
         - name: body
