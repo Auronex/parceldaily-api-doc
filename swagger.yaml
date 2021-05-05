@@ -159,9 +159,9 @@ paths:
     x-summary: Create Order
     post:
       description: |
-        Creates a new order. When a order is create, it means added into cart. You will need to call Checkout API to checkout the order.
+        Creates a new order. When a order is create, it means added into cart. You will need to call Checkout API to checkout the order. 
         
-        _**NOTE**_: Please take note that the `price` value must be same with the checking price API.
+        _**NOTE**_: Please take note that the **`price`** value must be same with the checking price API and parcel **`jnt`** didnt provide for sandbox
       summary: POST
       parameters:
         - name: token
@@ -468,6 +468,37 @@ paths:
             application/json:
                 error: "Unauthorized"
                 message: "Secret key must be provided"
+  
+  # /v1/partner/pl9/:
+  #   x-summary: Download PL9 form
+  #   post:
+  #     description: |
+  #       Download the PL9 form through signed URL. The signed URL will be expired upon visiting.
+        
+  #       _**NOTE**_: Please take note that the user need to have one **`PL9 form`** for poslaju connote.
+  #     summary: POST
+  #     parameters:
+  #       - name: token
+  #         in: header
+  #         description: a account secret
+  #         required: true
+  #         type: string
+  #       - name: body
+  #         in: body
+  #         required: true
+  #         schema:
+  #           $ref: '#/definitions/DownloadConnoteRequest'
+  #     responses:
+  #       200:
+  #         description: 'Successfully Responses result'
+  #       401:
+  #         description: 'Unauthorized Responses result'
+  #         schema:
+  #           $ref: '#/definitions/Error'
+  #         examples:
+  #           application/json:
+  #               error: "Unauthorized"
+  #               message: "Secret key must be provided"
                       
                 
                     
@@ -493,6 +524,7 @@ definitions:
     properties:
       postcode:
         type: string
+        example: "25200"
         description: |
           * Must be malaysia postcode 
           * Must be 5 digit postcode
@@ -600,12 +632,14 @@ definitions:
     properties:
       origin:
         type: integer
+        example: 25200
         description: |
           Postcode from destination
           * Must be malaysia postcode 
           * Must be 5 digit postcode
       destination:
         type: integer
+        example: 25200
         description: |
           Postcode to destination
           * Must be malaysia postcode 
@@ -620,6 +654,7 @@ definitions:
         # maximum: 4000
         description: |
           Cash On Delivery Price 
+          * Only available for **DHL** and **Ninjavan**
     required:
       - origin
       - destination
@@ -691,16 +726,143 @@ definitions:
     properties:
       serviceProvider:
         type: string
-        description: >-
+        example: dhl, poslaju, ninjavan, citylink, jnt
+        description: |
           Type of parcel
       pickupAddress:
-        type: string
+        type: object
         description: >-
-          Address id 
+          Sender Address
+        properties:
+          fullName:
+            type: string
+            minLength: 3
+            example: Sam
+            description: |
+              Sender name
+          phone:
+            type: string
+            minLength: 10
+            maxLength: 11
+            example: "017-1425324"
+            description: |
+              Sender Phone number 
+              * Malaysian phone number format
+          email:
+            type: string
+            format: email
+            example: sender@test.com
+            description: |
+              Sender email
+              * Must be valid email address
+          line1:
+            type: string
+            maxLength: 50
+            example: No.1, Lorong A
+            description: >-
+              Sender Line 1 Address
+          line2:
+            type: string
+            maxLength: 50
+            example: Taman A
+            description: >-
+              Sender Line 2 Address  
+          city:
+            type: string
+            example: Kuantan
+            description: |
+              Sender CIty Address 
+              * Must be malaysian city
+          postcode:
+            type: string
+            example: "25200"
+            description: |
+              Sender Postcode Address 
+              * Must be malaysia postcode 
+              * Must be 5 digit postcode
+          state:
+            type: string
+            example: Pahang
+            description: |
+              Sender State Address 
+              * Must be malaysian state
+        
+        required:
+        - fullName
+        - phone
+        - email
+        - line1
+        - line2
+        - city
+        - postcode
+        - state
       clientAddress:
-        type: string
+        type: object
         description: >-
-          Client Address id 
+          Receiver Address id
+        properties:
+          fullName:
+            type: string
+            minLength: 3
+            example: Mex
+            description: |
+              Receiver name
+          phone:
+            type: string
+            minLength: 10
+            maxLength: 11
+            example: "017-1414521"
+            description: |
+              Receiver Phone number 
+              * Malaysian phone number format
+          email:
+            type: string
+            format: email
+            example: receiver@test.com
+            description: |
+              Receiver email
+              * Must be valid email address
+          line1:
+            type: string
+            maxLength: 50
+            example: No.1, Lorong B
+            description: >-
+              Receiver Line 1 Address
+          line2:
+            type: string
+            maxLength: 50
+            example: Taman B
+            description: >-
+              Receiver Line 2 Address  
+          city:
+            type: string
+            example: Kuantan
+            description: |
+              Receiver CIty Address 
+              * Must be malaysian city
+          postcode:
+            type: string
+            example: "25200"
+            description: |
+              Receiver Postcode Address 
+              * Must be malaysia postcode 
+              * Must be 5 digit postcode
+          state:
+            type: string
+            example: Pahang
+            description: |
+              Receiver State Address 
+              * Must be malaysian state
+        
+        required:
+        - fullName
+        - phon
+        - email
+        - line1
+        - line2
+        - city
+        - postcode
+        - state
       kg:
         type: integer
         description: >-
@@ -711,6 +873,7 @@ definitions:
           Get the price from quotation api
       content:
         type: string
+        example: book
         description: >-
           Pracel detail description
       content_value:
@@ -720,8 +883,8 @@ definitions:
       cod:
         type: integer
         description: |
-          Cash On Delivery Price 
-          * The price must not more than RM4000
+          Cash On Delivery Price
+          * Only available for **DHL** and **Ninjavan**
     required:
       - serviceProvider
       - pickupAddress
@@ -732,13 +895,28 @@ definitions:
       - content_value
     example:
       serviceProvider : "dhl"
-      pickupAddress : "FBDlfCguaZ"
-      clientAddress : "PK7zhDeZpL"
+      pickupAddress : 
+          fullName : "Sam"
+          phone : "0171414521"
+          email : "sender@test.com"
+          line1 : "No.1, Lorong A"
+          line2 : "Taman A"
+          city : "Kuantan"
+          postcode : "25200"
+          state : "Pahang"
+      clientAddress : 
+          fullName : "Mex"
+          phone : "0171414521"
+          email : "receiver@test.com"
+          line1 : "No.1, Lorong B"
+          line2 : "Taman B"
+          city : "Kuantan"
+          postcode : "25200"
+          state : "Pahang"
       kg : 2
       price : 6.5
       content : "2"
       content_value : 2
-      cod : null
   
   PayOrder:
     title: Pay All Order
@@ -796,6 +974,7 @@ definitions:
     properties:
       connote:
         type: string
+        example: NVMYAXVEL000001063
         description: >-
           Parcel tracking number
     required:
