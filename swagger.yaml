@@ -469,36 +469,36 @@ paths:
                 error: "Unauthorized"
                 message: "Secret key must be provided"
   
-  # /v1/partner/pl9/:
-  #   x-summary: Download PL9 form
-  #   post:
-  #     description: |
-  #       Download the PL9 form through signed URL. The signed URL will be expired upon visiting.
+  /v1/partner/getpl9:
+    x-summary: Download PL9 form
+    get:
+      description: |
+        Download the PL9 form through signed URL. The signed URL will be expired upon visiting.
         
-  #       _**NOTE**_: Please take note that the user need to have one **`PL9 form`** for poslaju connote.
-  #     summary: POST
-  #     parameters:
-  #       - name: token
-  #         in: header
-  #         description: a account secret
-  #         required: true
-  #         type: string
-  #       - name: body
-  #         in: body
-  #         required: true
-  #         schema:
-  #           $ref: '#/definitions/DownloadConnoteRequest'
-  #     responses:
-  #       200:
-  #         description: 'Successfully Responses result'
-  #       401:
-  #         description: 'Unauthorized Responses result'
-  #         schema:
-  #           $ref: '#/definitions/Error'
-  #         examples:
-  #           application/json:
-  #               error: "Unauthorized"
-  #               message: "Secret key must be provided"
+        _**NOTE**_: Please take note that the user need to have one **`PL9 form`** when have poslaju parcel pickup and it's only available for _**production**_
+      summary: GET
+      parameters:
+        - name: token
+          in: header
+          description: a account secret
+          required: true
+          type: string
+        - name: merchantid
+          in: header
+          description: a account id
+          required: true
+          type: string
+      responses:
+        200:
+          description: 'Successfully Responses result'
+        401:
+          description: 'Unauthorized Responses result'
+          schema:
+            $ref: '#/definitions/Error'
+          examples:
+            application/json:
+                error: "Unauthorized"
+                message: "Secret key must be provided"
                       
                 
                     
