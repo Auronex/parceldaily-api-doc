@@ -19,6 +19,8 @@ Welcome to ParcelDaily API. This API is created for ParcelDaily users to make or
   - [Courier-specific Information](#courier-specific-information)
     - [Poslaju](#poslaju)
     - [J&T](#jt)
+    - [NinjaVan](#ninjavan)
+    - [DHL](#dhl)
     - [CityLink](#citylink)
   - [Reference](#reference)
    <!-- 3. [`Ninjavan`](###ninjavan)
@@ -44,6 +46,8 @@ Refer and follow the instructions given in the [Technical Documentation](https:/
 | Get order status    | Check the order processing status in the courier service                                              |
 | Check parcel status | Check the parcel delivering status                                                                    |
 | Tracking            | Track the parcel delivering status from the courier service                                           |
+| Consignment Note    | Download the consignment note through signed URL                                                      |
+| PL9 form            | Download the PL9 form when have poslaju parcel pickup through signed URL                              |
 
 <br/>
 
@@ -94,22 +98,34 @@ To view all the order made in ParcelDaily, simply navigate to the [Track Status]
 - The order response takes comparatively longer time than other courier services
 - City name Padang Besar Utara need to change into Padang Besar
 - All postcode in Ipoh area are 31650 (e.g: 31500 -> 31650)
+- All postcode in Kulai area are 81000 (e.g: 81010 -> 81000)
 - Shipment parcel description is **NOT** supported
 
-<!-- ### NinjaVan
-- Generation of API token is limited to **10 times** per minute, else one will be blocked for 1 hour
+### NinjaVan
+<!-- - Generation of API token is limited to **10 times** per minute, else one will be blocked for 1 hour
 - Token validation period is dynamic ranges between 1 hour and 30 days
 - A new OAuth access token will be generated automatically 5 minutes before the token expires -->
+- The minimum of character for name are 3 characters
+- The maximum of character for name are 30 characters
 
-<!-- ### DHL
--  -->
+### DHL
+- The minimum of character for name are 3 characters
+- The maximum of character for name are 30 characters
+- The minimum of character for address lines are 3 characters each 
+- The maximum of character for address lines are 50 characters each 
+- City are limited to 30 characters
+- Parcel detail are limited to 50 characters
 
 ### CityLink
 <!-- - The token renew every 7 days -->
+- Name are limited to 50 characters
 - Address lines are limited to 50 characters each
+- City are limited to 20 characters
+- Parcel detail are limited to 50 characters
 <!-- - **DOES NOT** return error state, errors are reflected in the return code and return message in success state
 - Connote is given in base64 binary form therefore conversion is required to get the pdf version -->
 
 ##### **ONLY DHL and Ninjavan support Cash On Delivery
+##### **ALL parcel have auto refund if order fail
 ## Reference
 Contact <sales@parceldaily.com> for more information and support
