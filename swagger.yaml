@@ -20,7 +20,13 @@ info:
       * Shippers are encouraged to retry order creation requests IF a **HTTP 5xx** error is returned from our API
       * If a **HTTP 4xx** error is returned, please log the response for your debugging purposes.
         * **Do not** retry the same order creation request without fixing the error specified in the response
-      * This API documentation is at version 1.0, we are always in a process of making our API more developer friendly as we all are developer. If you find any error message is not descriptive or missing error message, please send an email to sales@parceldaily.com
+      * Minimum for pickup:
+        * Poslaju: No Pick up for now
+        * DHL: 1 parcels and above
+        * NinjaVan: 1 parcels and above
+        * J&T: 5 parcels and above
+        * Citylink: 1 parcels and above
+      * This API documentation is at version 1.0, we are always in a process of making our API more developer friendly as we all are developer. If you find any error message is not descriptive or missing error message, please send an email to **<sales@parceldaily.com>**
     
     
     _**NOTE**_: Please contact your account manager to assign a Sandbox **`Token`** and **`Merchant Id`** for your account. If you are here for play around, you can try use this credential for quick test purpose. 
@@ -86,6 +92,8 @@ paths:
     post:
       description: |
         Get the quote of a order. This API will return different rate depending your user/package tier. Please refer to sales team for more information about the rate
+      
+        _**NOTE**_: Please take note that if the **`price`** value did'nt show or value is **`0`**, its mean that parcel do not support that postcode
       summary: POST
       parameters:
         - name: token
@@ -274,8 +282,10 @@ paths:
   /v1/partner/order/payAll:
     x-summary: Checkout Order
     post:
-      description: >-
+      description: |
         Making payment for the selected order. Please make sure you have enough credit in the wallet for better integration.
+        
+         _**NOTE**_: Please take note that **`J&T`** take some time to success compare with other courier and auto **`refund`** will trigger if order fail
       summary: POST
       parameters:
         - name: token
@@ -865,7 +875,7 @@ definitions:
         - state
       kg:
         type: integer
-        description: >-
+        description: |
           Weight of parcel 
       price:
         type: integer
@@ -873,8 +883,9 @@ definitions:
           Get the price from quotation api
       content:
         type: string
+        maxLength: 50
         example: book
-        description: >-
+        description: |
           Pracel detail description
       content_value:
         type: integer
