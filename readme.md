@@ -93,6 +93,7 @@ To view all the order made in ParcelDaily, simply navigate to the [Track Status]
 ## Courier-specific Information
 ### Poslaju
 - The pickup cut-off time is at **12PM**
+- No Pick up for now
 
 ### J&T
 - The order response takes comparatively longer time than other courier services
@@ -100,6 +101,7 @@ To view all the order made in ParcelDaily, simply navigate to the [Track Status]
 - All postcode in Ipoh area are 31650 (e.g: 31500 -> 31650)
 - All postcode in Kulai area are 81000 (e.g: 81010 -> 81000)
 - Shipment parcel description is **NOT** supported
+- Minimum for pickup: 5 parcels and above
 
 ### NinjaVan
 <!-- - Generation of API token is limited to **10 times** per minute, else one will be blocked for 1 hour
@@ -107,6 +109,7 @@ To view all the order made in ParcelDaily, simply navigate to the [Track Status]
 - A new OAuth access token will be generated automatically 5 minutes before the token expires -->
 - The minimum of character for name are 3 characters
 - The maximum of character for name are 30 characters
+- Minimum for pickup: 1 parcels and above
 
 ### DHL
 - The minimum of character for name are 3 characters
@@ -115,6 +118,7 @@ To view all the order made in ParcelDaily, simply navigate to the [Track Status]
 - The maximum of character for address lines are 50 characters each 
 - City are limited to 30 characters
 - Parcel detail are limited to 50 characters
+- Minimum for pickup: 1 parcels and above
 
 ### CityLink
 <!-- - The token renew every 7 days -->
@@ -122,6 +126,7 @@ To view all the order made in ParcelDaily, simply navigate to the [Track Status]
 - Address lines are limited to 50 characters each
 - City are limited to 20 characters
 - Parcel detail are limited to 50 characters
+- Minimum for pickup: 1 parcels and above
 <!-- - **DOES NOT** return error state, errors are reflected in the return code and return message in success state
 - Connote is given in base64 binary form therefore conversion is required to get the pdf version -->
 
