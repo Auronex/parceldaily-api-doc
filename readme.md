@@ -22,6 +22,7 @@ Welcome to ParcelDaily API. This API is created for ParcelDaily users to make or
     - [NinjaVan](#ninjavan)
     - [DHL](#dhl)
     - [CityLink](#citylink)
+  - [Tracking API](#tracking-api)
   - [Reference](#reference)
    <!-- 3. [`Ninjavan`](###ninjavan)
    4. [`DHL`](###dhl) -->
@@ -132,5 +133,10 @@ To view all the order made in ParcelDaily, simply navigate to the [Track Status]
 
 ##### **ONLY DHL and Ninjavan support Cash On Delivery
 ##### **ALL parcel have auto refund if order fail
+
+## Tracking API
+We provide a webhook API only for for **POST** method for tracking of parcels. Once you register a webhook URL with ParcelDaily, we will issue a **HTTP POST** request to the URL
+specified every time an event occurs. The request's **POST** parameters will contain JSON data relevant to the event that triggered the request. Below is the sample JSON Output<br/>
+![Sample JSON Output](/images/samplejson.png)  
 ## Reference
 Contact <sales@parceldaily.com> for more information and support

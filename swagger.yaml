@@ -42,6 +42,11 @@ info:
     | Production  | https://api.parceldaily.com |
     | Sandbox     | https://api.sandbox.parceldaily.com |
     
+    ### Tracking API
+    
+    We provide a webhook API only for for **POST** method for tracking of parcels. More information available [here](https://github.com/Auronex/parceldaily-api-doc).
+
+    
 host: api.sandbox.parceldaily.com
 basePath: /
 schemes:
