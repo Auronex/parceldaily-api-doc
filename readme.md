@@ -136,7 +136,7 @@ To view all the order made in ParcelDaily, simply navigate to the [Track Status]
 
 ## Tracking API
 We provide a webhook API only for for **POST** method for tracking of parcels. Once you register a webhook URL with ParcelDaily, we will issue a **HTTP POST** request to the URL
-specified every time an event occurs. The request's **POST** parameters will contain JSON data relevant to the event that triggered the request. Below is the sample JSON Output<br/>
+specified every time an event occurs. The request's **POST** parameters will contain JSON data relevant to the event that triggered the request. Below is the sample JSON Output<br/><br/>
 ![Sample JSON Output](/images/samplejson.png)  
 ## Reference
 Contact <sales@parceldaily.com> for more information and support
