@@ -14,6 +14,7 @@ Welcome to ParcelDaily API. This API is created for ParcelDaily users to make or
   - [How to Get a ParcelDaily API [Sandbox]](#how-to-get-a-parceldaily-api-sandbox)
   - [How to Get a ParcelDaily API [Production]](#how-to-get-a-parceldaily-api-production)
   - [What Can You Do with the API](#what-can-you-do-with-the-api)
+  - [How to Obtain ParcelDaily API Credentials [Production]](#how-to-obtain-parceldaily-api-credentials-production)
   - [How to Top Up Credit](#how-to-top-up-credit)
   - [View My Order](#view-my-order)
   - [Courier-specific Information](#courier-specific-information)
@@ -75,6 +76,11 @@ Refer and follow the instructions given in the [Technical Documentation](https:/
 6. Tracking
    
    >Track the parcel delivering status from the courier service. -->
+
+## How to Obtain ParcelDaily API Credentials [Production]
+After successfully login your account you can get the credential in external api page. To get the token key, you need to click **"Generate Token Key"** button.
+You can also enter the URL of your website here if you using **Tracking API**<br/><br/>
+![ExternalAPI Page](/images/externalapi.png)
 
 ## How to Top Up Credit
 1. Register an account at partner.parceldaily.com <br/><br/>
