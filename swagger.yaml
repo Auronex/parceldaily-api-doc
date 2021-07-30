@@ -901,6 +901,11 @@ definitions:
         description: |
           Cash On Delivery Price
           * Only available for **DHL** and **Ninjavan**
+      isDropoff:
+        type: boolean
+        description: |
+          Boolean flag that indicates whether or not a drop off is required. 
+           If **false**, the order will be picked up and the sender's address will be used as the pickup address.
     required:
       - serviceProvider
       - pickupAddress
@@ -909,6 +914,7 @@ definitions:
       - price
       - content
       - content_value
+      - isDropoff
     example:
       serviceProvider : "dhl"
       pickupAddress : 
@@ -933,6 +939,7 @@ definitions:
       price : 6.5
       content : "2"
       content_value : 2
+      isDropoff : false
   
   PayOrder:
     title: Pay All Order
