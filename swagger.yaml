@@ -22,7 +22,7 @@ info:
         * **Do not** retry the same order creation request without fixing the error specified in the response
       * Minimum for pickup:
         * Poslaju: No Pick up for now
-        * DHL: 1 parcels and above
+        * DHL: 5 parcels and above
         * NinjaVan: 1 parcels and above
         * J&T: 5 parcels and above
         * Citylink: 1 parcels and above

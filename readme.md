@@ -125,7 +125,7 @@ To view all the order made in ParcelDaily, simply navigate to the [Track Status]
 - The maximum of character for address lines are 50 characters each 
 - City are limited to 30 characters
 - Parcel detail are limited to 50 characters
-- Minimum for pickup: 1 parcels and above
+- Minimum for pickup: 5 parcels and above
 
 ### CityLink
 <!-- - The token renew every 7 days -->
