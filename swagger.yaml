@@ -1,15 +1,15 @@
-swagger: '2.0'
+swagger: "2.0"
 info:
-  version: '1.0'
+  version: "1.0"
   title: "Parceldaily"
   # license:
   #   name: MIT
   #   url: https://github.com/apiaryio/polls-api/blob/master/LICENSE
   description: |
-  
+
     ParcelDaily API is a RESTful API for creating the **`order`** until displaying the **`status order`**. 
     ParcelDaily also provide the calculation of order price for every parcel. You can refer to `https://github.com/Auronex/parceldaily-api-doc` to read more about integration guideline and info.
-   
+
     ### Important Integration Requirement
 
     Please take note of the following points:
@@ -26,41 +26,41 @@ info:
         * NinjaVan: 1 parcels and above
         * J&T: 5 parcels and above
         * Citylink: 1 parcels and above
+        * Pickupp: 1 parcels and above
       * This API documentation is at version 1.0, we are always in a process of making our API more developer friendly as we all are developer. If you find any error message is not descriptive or missing error message, please send an email to **<sales@parceldaily.com>**
-    
-    
+
+
     _**NOTE**_: Please contact your account manager to assign a Sandbox **`Token`** and **`Merchant Id`** for your account. If you are here for play around, you can try use this credential for quick test purpose. 
-    
+
     | Merchant Id | Token  |
     | ----------- | ------------ |
     | 8VqGyrqYCQ  | 950af98c-f033-4cdd-ae8a-82db543a3efe |
-    
+
     ### Base URL By Environment
 
     | Environment | Base URL  |
     | ----------- | --------- |
     | Production  | https://api.parceldaily.com |
     | Sandbox     | https://api.sandbox.parceldaily.com |
-    
+
     ### Tracking API
-    
+
     We provide a webhook API only for for **POST** method for tracking of parcels. More information available [here](https://github.com/Auronex/parceldaily-api-doc).
 
-    
 host: api.sandbox.parceldaily.com
 basePath: /
 schemes:
-- https
+  - https
 consumes:
-- application/json
+  - application/json
 produces:
-- application/json
+  - application/json
 paths:
   /v1/partner/postcode:
     x-summary: Check state
     post:
       description: >-
-       Get the state of a postcode in Malaysia
+        Get the state of a postcode in Malaysia
       summary: POST
       parameters:
         - name: token
@@ -72,32 +72,32 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/PostcodeRequest'
+            $ref: "#/definitions/PostcodeRequest"
       responses:
         200:
-          description: 'Successfully Responses result'
+          description: "Successfully Responses result"
           schema:
-            $ref: '#/definitions/Postcode'
+            $ref: "#/definitions/Postcode"
           examples:
             application/json:
-                success: 
-                  ok : true
-                  state: "Pahang"
+              success:
+                ok: true
+                state: "Pahang"
         401:
-          description: 'Unauthorized Responses result'
+          description: "Unauthorized Responses result"
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
           examples:
             application/json:
-                error: "Unauthorized"
-                message: "Secret key must be provided"
-                
+              error: "Unauthorized"
+              message: "Secret key must be provided"
+
   /v1/partner/merchant/quote:
     x-summary: Rate Checking
     post:
       description: |
         Get the quote of a order. This API will return different rate depending your user/package tier. Please refer to sales team for more information about the rate
-      
+
         _**NOTE**_: Please take note that if the **`price`** value did'nt show or value is **`0`**, its mean that parcel do not support that postcode
       summary: POST
       parameters:
@@ -115,65 +115,90 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/QuoteRequest'
+            $ref: "#/definitions/QuoteRequest"
       responses:
         200:
-          description: 'Successfully Responses result'
+          description: "Successfully Responses result"
           schema:
-            $ref: '#/definitions/Quote'
+            $ref: "#/definitions/Quote"
           examples:
             application/json:
-                success: 
-                  fromPostcode:  
-                    Postcode: 25200
-                    Place: "Bandar Indera Mahkota"
-                    Area: "Kuantan"
-                    State: "PHG"
-                    StateName: "Pahang"
-                  toPostcode: 
-                    Postcode: 25200
-                    Place: "Bandar Indera Mahkota"
-                    Area: "Kuantan"
-                    State: "PHG"
-                    StateName: "Pahang"
-                  totalPrice: "6.50"
-                  cod: 2
-                  dhlPrice: "11.80"
-                  dhlCod: "5.30"
-                  dhlPostage: "11.80"
-                  nvPrice: "14.00"
-                  nvCod: "5.00"
-                  nvPostage: "9.00"
-                  jntPrice: "8.00"
-                  citylinkPrice: "9.00"
-                
+              success:
+                fromPostcode:
+                  Postcode: 25200
+                  Place: "Bandar Indera Mahkota"
+                  Area: "Kuantan"
+                  State: "PHG"
+                  StateName: "Pahang"
+                  CountryName: "Malaysia"
+                toPostcode:
+                  Postcode: 25200
+                  Place: "Bandar Indera Mahkota"
+                  Area: "Kuantan"
+                  State: "PHG"
+                  StateName: "Pahang"
+                  CountryName: "Malaysia"
+                poslajuPrice: "10.00"
+                poslajuPostage: "10.00"
+                cod: 0
+                notificationRate: ""
+                dhlPrice: "6.50"
+                dhlCod: ""
+                dhlInsurance: ""
+                dhlPostage: "6.50"
+                ninjavanPrice: "9.00"
+                ninjavanCod: ""
+                ninjavanInsurance: ""
+                ninjavanPostage: "9.00"
+                jntPrice: "8.00"
+                jntCod: ""
+                jntInsurance: ""
+                jntPostage: "8.00"
+                citylinkPostage: "9.00"
+                citylinkPrice: "9.00"
+                pickuppPostage: ""
+                pickuppCod: ""
+                pickuppPrice: ""
+                teleportPostage: ""
+                teleportCod: ""
+                teleportPrice: ""
+                sfstandardPostage: ""
+                sfstandardPrice: ""
+                sfeconomyPostage: ""
+                sfeconomyPrice: ""
+                flashPostage: "8.00"
+                flashCod: ""
+                flashPrice: "8.00"
+
         422:
-          description: 'Empty value Responses result'
+          description: "Empty value Responses result"
           schema:
-            $ref: '#/definitions/ErrorEmpty'
+            $ref: "#/definitions/ErrorEmpty"
           examples:
             application/json:
-                error: {
-                  destination: [
-                    "Should not be empty",
-                    "Does not fulfill requirement: isLength"
-                  ]
+              error:
+                {
+                  destination:
+                    [
+                      "Should not be empty",
+                      "Does not fulfill requirement: isLength",
+                    ],
                 }
         401:
-          description: 'Unauthorized Responses result'
+          description: "Unauthorized Responses result"
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
           examples:
             application/json:
-                error: "Unauthorized"
-                message: "Secret key must be provided"
-  
+              error: "Unauthorized"
+              message: "Secret key must be provided"
+
   /v1/partner/order/create:
     x-summary: Create Order
     post:
       description: |
         Creates a new order. When a order is create, it means added into cart. You will need to call Checkout API to checkout the order. 
-        
+
         _**NOTE**_: Please take note that the **`price`** value must be same with the checking price API and parcel **`jnt`** didnt provide for sandbox
       summary: POST
       parameters:
@@ -191,25 +216,28 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/CreateOrderRequest'
+            $ref: "#/definitions/CreateOrderRequest"
       responses:
         200:
-          description: 'Successfully Responses result'
+          description: "Successfully Responses result"
           schema:
-            $ref: '#/definitions/CreateOrder'
+            $ref: "#/definitions/CreateOrder"
           examples:
             application/json:
-                success: {
+              success:
+                {
                   serviceProvider: "dhl",
-                  merchant: {
+                  merchant:
+                    {
                       name: "Auronex ",
                       BRN: "002074755",
                       memberType: "Normal",
-                      package: {
+                      package:
+                        {
                           __type: "Pointer",
                           className: "Package",
-                          objectId: "KNPjuvbgHo"
-                      },
+                          objectId: "KNPjuvbgHo",
+                        },
                       createdAt: "2020-11-24T07:39:59.033Z",
                       updatedAt: "2021-04-20T03:37:32.656Z",
                       phone: "0179339876",
@@ -219,17 +247,19 @@ paths:
                       credits: 53208.6,
                       objectId: "scsMoA9S1N",
                       __type: "Object",
-                     className: "Merchant"
-                  },
+                      className: "Merchant",
+                    },
                   price: 6.5,
                   content_value: 2,
-                  receiver: {
+                  receiver:
+                    {
                       email: "ahmad@gmail.com",
-                      merchant: {
+                      merchant:
+                        {
                           __type: "Pointer",
                           className: "Merchant",
-                          objectId: "scsMoA9S1N"
-                      },
+                          objectId: "scsMoA9S1N",
+                        },
                       city: "Kuantan",
                       postcode: "25200",
                       phone: "60125875469",
@@ -241,17 +271,19 @@ paths:
                       updatedAt: "2020-12-23T13:04:00.596Z",
                       objectId: "ZgM2i48XNF",
                       __type: "Object",
-                      className: "ClientAddress"
-                  },
+                      className: "ClientAddress",
+                    },
                   content: "2",
                   kg: 2,
                   cod: null,
-                  pickup: {
-                      merchant: {
+                  pickup:
+                    {
+                      merchant:
+                        {
                           __type: "Pointer",
                           className: "Merchant",
-                          objectId: "scsMoA9S1N"
-                      },
+                          objectId: "scsMoA9S1N",
+                        },
                       email: "wanmuhdamin@gmail.com",
                       city: "Kuantan",
                       postcode: "25200",
@@ -264,32 +296,32 @@ paths:
                       updatedAt: "2021-04-09T11:50:18.645Z",
                       objectId: "3G4KCnNw9f",
                       __type: "Object",
-                      className: "Address"
-                  },
+                      className: "Address",
+                    },
                   createdAt: "2021-04-20T04:15:24.225Z",
                   updatedAt: "2021-04-20T04:15:24.225Z",
-                  objectId: "ykBc5wQuWw"
+                  objectId: "ykBc5wQuWw",
                 }
         422:
-          description: 'Server calculated price does not match submitted price'
+          description: "Server calculated price does not match submitted price"
           examples:
             application/json:
-                error: {}
+              error: {}
         401:
-          description: 'Unauthorized Responses result'
+          description: "Unauthorized Responses result"
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
           examples:
             application/json:
-                error: "Unauthorized"
-                message: "Secret key must be provided"
-                
+              error: "Unauthorized"
+              message: "Secret key must be provided"
+
   /v1/partner/order/payAll:
     x-summary: Checkout Order
     post:
       description: |
         Making payment for the selected order. Please make sure you have enough credit in the wallet for better integration.
-        
+
          _**NOTE**_: Please take note that **`J&T`** take some time to success compare with other courier and auto **`refund`** will trigger if order fail
       summary: POST
       parameters:
@@ -307,34 +339,29 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/PayOrderRequest'
+            $ref: "#/definitions/PayOrderRequest"
       responses:
         200:
-          description: 'Successfully Responses result'
+          description: "Successfully Responses result"
           schema:
-            $ref: '#/definitions/PayOrder'
+            $ref: "#/definitions/PayOrder"
           examples:
             application/json:
-                success: [
-                  "sfMeOuzvtK"
-                ]
+              success: [{ "orderId": "sfMeOuzvtK", "connote": "63125215258MY" }]
         500:
-          description: 'Object not found'
+          description: "Object not found"
           examples:
             application/json:
-                error: {
-                  message: "Object not found.",
-                  code: 101
-                }
+              error: { message: "Object not found.", code: 101 }
         401:
-          description: 'Unauthorized Responses result'
+          description: "Unauthorized Responses result"
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
           examples:
             application/json:
-                error: "Unauthorized"
-                message: "Secret key must be provided"
-                
+              error: "Unauthorized"
+              message: "Secret key must be provided"
+
   /v1/partner/orders:
     x-summary: Get all orders
     get:
@@ -354,10 +381,11 @@ paths:
           type: string
       responses:
         200:
-          description: 'Successfully Responses result'
+          description: "Successfully Responses result."
           examples:
             application/json:
-                orders: [
+              orders:
+                [
                   {
                     consignNote: "5520120314210252",
                     name: "Auronex",
@@ -365,18 +393,20 @@ paths:
                     pickup: "Alex",
                     pickupEmail: "test@example.com",
                     content: "item",
-                    receiverAddress: {
+                    receiverAddress:
+                      {
                         line1: "No 5, Jalan Impian 4",
                         city: "Selangor",
                         postcode: "47000",
                         phone: "60120101010",
-                    },
-                    pickupAddress: {
+                      },
+                    pickupAddress:
+                      {
                         line1: "No.12, Lororng I 2/1,",
                         line2: "Taman A",
                         city: "Kuantan",
-                        postcode: "25200"
-                    },
+                        postcode: "25200",
+                      },
                     orderId: "GSP5EcMGg6",
                     orderStatus: "Waiting Pickup",
                     orderLastUpdateStatus: "2021-03-18T18:10:54.713Z",
@@ -390,18 +420,18 @@ paths:
                     createdAt: "2021-03-18T12:45:43.016Z",
                     weight: 5,
                     receiverState: "Selangor",
-                    pickupState: "Pahang"
-                  }
+                    pickupState: "Pahang",
+                  },
                 ]
         401:
-          description: 'Unauthorized Responses result'
+          description: "Unauthorized Responses result"
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
           examples:
             application/json:
-                error: "Unauthorized"
-                message: "Secret key must be provided"
-                
+              error: "Unauthorized"
+              message: "Secret key must be provided"
+
   /v1/partner/track/:
     x-summary: Tracking
     post:
@@ -418,31 +448,32 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/TrackOrderRequest'
+            $ref: "#/definitions/TrackOrderRequest"
       responses:
         200:
-          description: 'Successfully Responses result'
+          description: "Successfully Responses result"
           schema:
-            $ref: '#/definitions/TrackOrder'
+            $ref: "#/definitions/TrackOrder"
           examples:
             application/json:
-                ninjavan: [
+              ninjavan:
+                [
                   {
                     consign_no: "NVMYAXVEL000001063",
                     serviceProvider: "ninjavan",
                     status: "Waiting Pickup",
-                    lastUpdateStatus: "2021-04-20T10:14:06.476Z"
-                  }
+                    lastUpdateStatus: "2021-04-20T10:14:06.476Z",
+                  },
                 ]
         401:
-          description: 'Unauthorized Responses result'
+          description: "Unauthorized Responses result"
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
           examples:
             application/json:
-                error: "Unauthorized"
-                message: "Secret key must be provided"
-  
+              error: "Unauthorized"
+              message: "Secret key must be provided"
+
   /v1/partner/consign-pdf/:
     x-summary: Download Consignment Note
     post:
@@ -459,10 +490,10 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/DownloadConnoteRequest'
+            $ref: "#/definitions/DownloadConnoteRequest"
       responses:
         200:
-          description: 'Successfully Responses result'
+          description: "Successfully Responses result"
           # schema:
           #   $ref: '#/definitions/DownloadConnote'
           # examples:
@@ -476,20 +507,20 @@ paths:
           #         }
           #       ]
         401:
-          description: 'Unauthorized Responses result'
+          description: "Unauthorized Responses result"
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
           examples:
             application/json:
-                error: "Unauthorized"
-                message: "Secret key must be provided"
-  
+              error: "Unauthorized"
+              message: "Secret key must be provided"
+
   /v1/partner/getpl9:
     x-summary: Download PL9 form
     get:
       description: |
         Download the PL9 form through signed URL. The signed URL will be expired upon visiting.
-        
+
         _**NOTE**_: Please take note that the user need to have one **`PL9 form`** when have poslaju parcel pickup and it's only available for _**production**_
       summary: GET
       parameters:
@@ -505,18 +536,16 @@ paths:
           type: string
       responses:
         200:
-          description: 'Successfully Responses result'
+          description: "Successfully Responses result"
         401:
-          description: 'Unauthorized Responses result'
+          description: "Unauthorized Responses result"
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
           examples:
             application/json:
-                error: "Unauthorized"
-                message: "Secret key must be provided"
-                      
-                
-                    
+              error: "Unauthorized"
+              message: "Secret key must be provided"
+
 definitions:
   Postcode:
     title: Postcode
@@ -543,11 +572,18 @@ definitions:
         description: |
           * Must be malaysia postcode 
           * Must be 5 digit postcode
+      country:
+        type: string
+        example: "Malaysia"
+        description: |
+          Country Name
     required:
       - postcode
+      - country
     example:
       postcode: "25200"
-      
+      country: "Malaysia"
+
   Quote:
     title: Quote
     type: object
@@ -604,43 +640,127 @@ definitions:
           poslajuPrice:
             type: string
             description: >-
+              Total Price for poslaju
+          poslajuPostage:
+            type: string
+            description: >-
               Price for poslaju
           cod:
             type: string
             description: >-
               COD price
-          dhlPrice:
+          notificationRate:
             type: string
             description: >-
-              Price for dhl
-          dhlCod:
-            type: string
-            description: >-
-              Price dhl charge for COD
+              Notification price
           dhlPostage:
             type: string
             description: >-
-              Price dhl without including COD
-          nvPrice:
+              Price for DHL
+          dhlCod:
+            type: string
+            description: >-
+              Price DHL charge for COD
+          dhlInsurance:
+            type: string
+            description: >-
+              Price DHL charge for insurance
+          dhlPrice:
+            type: string
+            description: >-
+              Total Price for DHL
+          ninjavanPostage:
             type: string
             description: >-
               Price for ninjavan
-          nvCod:
+          ninjavanCod:
             type: string
             description: >-
               Price ninjavan charge for COD
-          nvPostage:
+          ninjavanInsurance:
             type: string
             description: >-
-              Price ninjavan without including COD
+              Price ninjavan charge for insurance
+          ninjavanPrice:
+            type: string
+            description: >-
+              Total price for ninjavan
+          jntPostage:
+            type: string
+            description: >-
+              Price for J&T
+          jntCod:
+            type: string
+            description: >-
+              Price J&T charge for COD
+          jntInsurance:
+            type: string
+            description: >-
+              Price J&T charge for insurance
           jntPrice:
             type: string
             description: >-
-              Price for j&t
-          citylinkPrice:
+              Total price for J&T
+          citylinkPostage:
             type: string
             description: >-
               Price for citylink
+          citylinkPrice:
+            type: string
+            description: >-
+              Total Price for citylink
+          pickuppPostage:
+            type: string
+            description: >-
+              Price for Pickupp
+          pickuppCod:
+            type: string
+            description: >-
+              Price Pickupp charge for COD
+          pickuppPrice:
+            type: string
+            description: >-
+              Total price for Pickupp
+          teleportPostage:
+            type: string
+            description: >-
+              Price for Teleport
+          teleportCod:
+            type: string
+            description: >-
+              Price Teleport charge for COD
+          teleportPrice:
+            type: string
+            description: >-
+              Total price for Teleport
+          sfstandardPostage:
+            type: string
+            description: >-
+              Price for SF Standard
+          sfstandardPrice:
+            type: string
+            description: >-
+              Total price for SF Standard
+          sfeconomyPostage:
+            type: string
+            description: >-
+              Price for SF Economy
+          sfeconomyPrice:
+            type: string
+            description: >-
+              Total price for SF Economy
+          flashPostage:
+            type: string
+            description: >-
+              Price for Flash
+          flashCod:
+            type: string
+            description: >-
+              Price Flash charge for COD
+          flashPrice:
+            type: string
+            description: >-
+              Total price for Flash
   QuoteRequest:
     title: Quote Request
     type: object
@@ -661,25 +781,46 @@ definitions:
           * Must be 5 digit postcode
       weight:
         type: integer
-        # maximum: 30
+        maximum: 30
         description: |
           Weight of parcel
       cod:
         type: integer
-        # maximum: 4000
+        maximum: 4000
         description: |
           Cash On Delivery Price 
           * Only available for **DHL** and **Ninjavan**
+      insurance:
+        type: integer
+        minimum: 201
+        maximum: 2000
+        description: |
+          Insurance value for the parcel 
+          * Only available for **DHL** , **Ninjavan** and **JNT**
+      originCountry:
+        type: string
+        example: Malaysia
+        description: |
+          From country
+      destinationCountry:
+        type: string
+        example: Malaysia
+        description: |
+          Destination country
     required:
       - origin
+      - originCountry
       - destination
+      - destinationCountry
       - weight
     example:
-      origin : 25200
-      destination : 25200
-      weight : 2
-      cod : 0
-  
+      origin: 25200
+      destination: 25200
+      weight: 2
+      cod: 0
+      originCountry: "Malaysia"
+      destinationCountry: "Malaysia"
+
   CreateOrder:
     title: Create Order
     type: object
@@ -741,7 +882,8 @@ definitions:
     properties:
       serviceProvider:
         type: string
-        example: dhl, poslaju, ninjavan, citylink, jnt
+        example: |
+          dhl, poslaju, ninjavan, citylink, jnt, pickupp, teleport, sfstandard, sfeconomy, flash
         description: |
           Type of parcel
       pickupAddress:
@@ -755,11 +897,17 @@ definitions:
             example: Sam
             description: |
               Sender name
+          countryCode:
+            type: string
+            example: "+6"
+            description: |
+              Sender country code 
+              * Malaysian country code format
           phone:
             type: string
-            minLength: 10
-            maxLength: 11
-            example: "017-1425324"
+            minLength: 9
+            maxLength: 10
+            example: "171425324"
             description: |
               Sender Phone number 
               * Malaysian phone number format
@@ -781,7 +929,7 @@ definitions:
             maxLength: 50
             example: Taman A
             description: >-
-              Sender Line 2 Address  
+              Sender Line 2 Address
           city:
             type: string
             example: Kuantan
@@ -801,16 +949,23 @@ definitions:
             description: |
               Sender State Address 
               * Must be malaysian state
-        
+          country:
+            type: string
+            example: Malaysia
+            description: |
+              Sender country
+
         required:
-        - fullName
-        - phone
-        - email
-        - line1
-        - line2
-        - city
-        - postcode
-        - state
+          - fullName
+          - countryCode
+          - phone
+          - email
+          - line1
+          - line2
+          - city
+          - postcode
+          - state
+          - country
       clientAddress:
         type: object
         description: >-
@@ -822,13 +977,19 @@ definitions:
             example: Mex
             description: |
               Receiver name
+          countryCode:
+            type: string
+            example: "+6"
+            description: |
+              Sender country code 
+              * Malaysian country code format
           phone:
             type: string
-            minLength: 10
-            maxLength: 11
-            example: "017-1414521"
+            minLength: 9
+            maxLength: 10
+            example: "171425324"
             description: |
-              Receiver Phone number 
+              Sender Phone number 
               * Malaysian phone number format
           email:
             type: string
@@ -848,7 +1009,7 @@ definitions:
             maxLength: 50
             example: Taman B
             description: >-
-              Receiver Line 2 Address  
+              Receiver Line 2 Address
           city:
             type: string
             example: Kuantan
@@ -868,20 +1029,32 @@ definitions:
             description: |
               Receiver State Address 
               * Must be malaysian state
-        
+          country:
+            type: string
+            example: Malaysia
+            description: |
+              Sender country
+
         required:
-        - fullName
-        - phon
-        - email
-        - line1
-        - line2
-        - city
-        - postcode
-        - state
+          - fullName
+          - phon
+          - email
+          - line1
+          - line2
+          - city
+          - postcode
+          - state
       kg:
         type: integer
         description: |
-          Weight of parcel 
+          Weight of parcel
+      insurance:
+        type: integer
+        minimum: 201
+        maximum: 2000
+        description: |
+          Insurance value for the parcel 
+          * Only available for **DHL** , **Ninjavan** and **JNT**
       price:
         type: integer
         description: >-
@@ -895,17 +1068,23 @@ definitions:
       content_value:
         type: integer
         description: >-
-          Parcel detail value 
+          Parcel detail value
+      commodity_id:
+        type: integer
+        description: |
+          Parcel commudity_id value
+          * Only required for **Teleport** and **SF**
       cod:
         type: integer
         description: |
           Cash On Delivery Price
-          * Only available for **DHL** and **Ninjavan**
+          * Only available for **DHL** , **Ninjavan** , **J&T** and **Flash**
       isDropoff:
         type: boolean
         description: |
           Boolean flag that indicates whether or not a drop off is required. 
-           If **false**, the order will be picked up and the sender's address will be used as the pickup address.
+          If **false**, the order will be picked up and the sender's address will be used as the pickup address.
+          * Only available for **Poslaju** , **DHL** , **Ninjavan** , **J&T** and **SF**
     required:
       - serviceProvider
       - pickupAddress
@@ -916,31 +1095,36 @@ definitions:
       - content_value
       - isDropoff
     example:
-      serviceProvider : "dhl"
-      pickupAddress : 
-          fullName : "Sam"
-          phone : "0171414521"
-          email : "sender@test.com"
-          line1 : "No.1, Lorong A"
-          line2 : "Taman A"
-          city : "Kuantan"
-          postcode : "25200"
-          state : "Pahang"
-      clientAddress : 
-          fullName : "Mex"
-          phone : "0171414521"
-          email : "receiver@test.com"
-          line1 : "No.1, Lorong B"
-          line2 : "Taman B"
-          city : "Kuantan"
-          postcode : "25200"
-          state : "Pahang"
-      kg : 2
-      price : 6.5
-      content : "2"
-      content_value : 2
-      isDropoff : false
-  
+      serviceProvider: "dhl"
+      pickupAddress:
+        fullName: "Sam"
+        countryCode: "+6"
+        phone: "171414521"
+        email: "sender@test.com"
+        line1: "No.1, Lorong A"
+        line2: "Taman A"
+        city: "Kuantan"
+        postcode: "25200"
+        state: "Pahang"
+        country: "Malaysia"
+      clientAddress:
+        fullName: "Mex"
+        countryCode: "+6"
+        phone: "171414521"
+        email: "receiver@test.com"
+        line1: "No.1, Lorong B"
+        line2: "Taman B"
+        city: "Kuantan"
+        postcode: "25200"
+        state: "Pahang"
+        country: "Malaysia"
+      kg: 2
+      price: 6.5
+      commodity_id: 1006
+      content: "Rice"
+      content_value: 2
+      isDropoff: false
+
   PayOrder:
     title: Pay All Order
     type: object
@@ -960,10 +1144,8 @@ definitions:
     required:
       - orderIds
     example:
-      orderIds: [
-        sfMeOuzvtK
-      ]
-  
+      orderIds: [sfMeOuzvtK]
+
   TrackOrder:
     title: Track Order
     type: object
@@ -978,11 +1160,11 @@ definitions:
             consign_no:
               type: string
               description: >-
-                Consignment number of tracking 
+                Consignment number of tracking
             serviceProvider:
               type: string
               description: >-
-                Type of parcel 
+                Type of parcel
             status:
               type: string
               description: >-
@@ -990,7 +1172,7 @@ definitions:
             lastUpdatesStatus:
               type: string
               description: >-
-                Datetime for updated parcel status 
+                Datetime for updated parcel status
   TrackOrderRequest:
     title: Track Order Request
     type: object
@@ -1004,7 +1186,7 @@ definitions:
       - connote
     example:
       connote: NVMYAXVEL000001063
-      
+
   DownloadConnote:
     title: Download Connote
     type: object
@@ -1025,7 +1207,7 @@ definitions:
       - connote
     example:
       connote: NVMYAXVEL000001063
-      
+
   Error:
     type: object
     properties:
@@ -1037,14 +1219,14 @@ definitions:
         type: string
         description: >-
           Error message
-  
+
   ErrorEmpty:
     type: object
     properties:
       error:
         type: object
         description: >-
-          Attribute that contain error  
+          Attribute that contain error
         properties:
           destination:
             type: array
@@ -1052,4 +1234,3 @@ definitions:
               type: string
               description: >-
                 Error message
-  
