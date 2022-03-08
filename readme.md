@@ -23,6 +23,11 @@ Welcome to ParcelDaily API. This API is created for ParcelDaily users to make or
     - [NinjaVan](#ninjavan)
     - [DHL](#dhl)
     - [CityLink](#citylink)
+    - [Pickupp](#pickupp)
+    - [Teleport](#teleport)
+    - [SF Standard](#sfstandard)
+    - [SF Economy](#sfeconomy)
+    - [Flash](#flash)
   - [Tracking API](#tracking-api)
   - [Reference](#reference)
    <!-- 3. [`Ninjavan`](###ninjavan)
@@ -40,16 +45,17 @@ Please contact your account manager to assign a Sandbox **`Token`** and **`Merch
 Refer and follow the instructions given in the [Technical Documentation](https://parceldaily.docs.apiary.io). It will gives you a clear step-by-step guide.<br/><br/>
 ![Integration Workflow](/images/integration_workflow.jpg)
 ## What Can You Do with the API
-| Action              | Description                                                                                           |
-|:------------------- |:----------------------------------------------------------------------------------------------------- |
-| Rate Checking       | Checks the rate of the delivery fee for different courier services for different region and distance  |
-| Make Order          | Make an order with up to 5 choices of courier services to send your parcel to anywhere in the country |
-| Checkout order      | Make payment for the order you have made                                                              |
-| Get order status    | Check the order processing status in the courier service                                              |
-| Check parcel status | Check the parcel delivering status                                                                    |
-| Tracking            | Track the parcel delivering status from the courier service                                           |
-| Consignment Note    | Download the consignment note through signed URL                                                      |
-| PL9 form            | Download the PL9 form when have poslaju parcel pickup through signed URL                              |
+| Action              | Description                                                                                                 |
+|:------------------- |:------------------------------------------------------------------------------------------------------------|
+| Rate Checking       | Checks the rate of the delivery fee for different courier services for different region and distance        |
+| Make Order          | Make an order with up to 5 choices of courier services to send your parcel to anywhere in the country       |
+| Make Bulk Order     | Make an bulk order with up to 5 choices of courier services to send your parcel to anywhere in the country  |
+| Checkout order      | Make payment for the order you have made                                                                    |
+| Get order status    | Check the order processing status in the courier service                                                    |
+| Check parcel status | Check the parcel delivering status                                                                          |
+| Tracking            | Track the parcel delivering status from the courier service                                                 |
+| Consignment Note    | Download the consignment note through signed URL                                                            |
+| PL9 form            | Download the PL9 form when have poslaju parcel pickup through signed URL                                    |
 
 <br/>
 
@@ -99,24 +105,26 @@ To view all the order made in ParcelDaily, simply navigate to the [Track Status]
 
 ## Courier-specific Information
 ### Poslaju
+- Insurance is **NOT** supported
+- COD is **NOT** supported
+- Drop Off **IS** supported
 - The pickup cut-off time is at **12PM**
 - No Pick up for now
 
 ### J&T
-- The order response takes comparatively longer time than other courier services
-- City name Padang Besar Utara need to change into Padang Besar
-- All postcode in Ipoh area are 31650 (e.g: 31500 -> 31650)
-- All postcode in Kulai area are 81000 (e.g: 81010 -> 81000)
+- Insurance **IS** supported
+- COD **IS** supported
+- Drop Off **IS** supported
 - Shipment parcel description is **NOT** supported
-- Minimum for pickup: 5 parcels and above
+<!-- - Minimum for pickup: 5 parcels and above -->
 
 ### NinjaVan
-<!-- - Generation of API token is limited to **10 times** per minute, else one will be blocked for 1 hour
-- Token validation period is dynamic ranges between 1 hour and 30 days
-- A new OAuth access token will be generated automatically 5 minutes before the token expires -->
 - The minimum of character for name are 3 characters
 - The maximum of character for name are 30 characters
-- Minimum for pickup: 1 parcels and above
+- Insurance **IS** supported
+- COD **IS** supported
+- Drop Off **IS** supported
+<!-- - Minimum for pickup: 1 parcels and above -->
 
 ### DHL
 - The minimum of character for name are 3 characters
@@ -125,19 +133,58 @@ To view all the order made in ParcelDaily, simply navigate to the [Track Status]
 - The maximum of character for address lines are 50 characters each 
 - City are limited to 30 characters
 - Parcel detail are limited to 50 characters
-- Minimum for pickup: 5 parcels and above
+- Insurance **IS** supported
+- COD **IS** supported
+- Drop Off **IS** supported
+<!-- - Minimum for pickup: 5 parcels and above -->
 
 ### CityLink
-<!-- - The token renew every 7 days -->
 - Name are limited to 50 characters
 - Address lines are limited to 50 characters each
 - City are limited to 20 characters
 - Parcel detail are limited to 50 characters
-- Minimum for pickup: 1 parcels and above
-<!-- - **DOES NOT** return error state, errors are reflected in the return code and return message in success state
-- Connote is given in base64 binary form therefore conversion is required to get the pdf version -->
+- Insurance is **NOT** supported
+- COD is **NOT** supported
+- Drop Off is **NOT** supported
+<!-- - Minimum for pickup: 1 parcels and above -->
 
-##### **ONLY DHL and Ninjavan support Cash On Delivery
+### Pickupp
+- **NOT** support parcel weight with more than 10kg
+- Insurance is **NOT** supported
+- COD is **NOT** supported
+- Drop Off is **NOT** supported
+
+### Teleport
+- Only for International Country and East Malaysia
+- Email is **required** for both sender and receiver
+- Insurance is **NOT** supported
+- COD is **NOT** supported
+- Drop Off is **NOT** supported
+
+### SF Standard
+- Only for International Country
+- Insurance is **NOT** supported
+- COD is **NOT** supported
+- Drop Off is **IS** supported
+- Commodity Id is **required**
+
+### SF Economy
+- Only for International Country
+- Insurance is **NOT** supported
+- COD is **NOT** supported
+- Drop Off is **IS** supported
+- Commodity Id is **required**
+
+### Flash
+- Insurance is **NOT** supported
+- COD is **IS** supported
+- Does **NOT** supported COD that have decimal value
+- Drop Off is **NOT** supported
+
+##### **ONLY DHL, Ninjavan, J&T and Flash support Cash On Delivery
+
+##### **For international delivery, currently ONLY support Singapore
+
 ##### **ALL parcel have auto refund if order fail
 
 ## Tracking API
