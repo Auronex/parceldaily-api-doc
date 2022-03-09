@@ -316,13 +316,59 @@ paths:
               error: "Unauthorized"
               message: "Secret key must be provided"
 
+  /v1/partner/order/bulkCreate:
+    x-summary: Create Bulk Order
+    post:
+      description: |
+        Creates a new bulk order. When a order is create, it means added into cart. You will need to call Checkout API to checkout the order.
+
+        _**NOTE**_: Please take note that the **`price`** value must be same with the checking price API and parcel **`jnt`** didnt provide for sandbox
+      summary: POST
+      parameters:
+        - name: token
+          in: header
+          description: a account secret
+          required: true
+          type: string
+        - name: merchantid
+          in: header
+          description: a account id
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/CreateBulkOrderRequest"
+      responses:
+        200:
+          description: "Successfully Responses result"
+          schema:
+            $ref: "#/definitions/CreateBulkOrder"
+          examples:
+            application/json:
+              success: ["aRG2YKxltx", "C4iFNBzXeW"]
+        422:
+          description: "Server calculated price does not match submitted price"
+          examples:
+            application/json:
+              error: {}
+        401:
+          description: "Unauthorized Responses result"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              error: "Unauthorized"
+              message: "Secret key must be provided"
+
   /v1/partner/order/payAll:
     x-summary: Checkout Order
     post:
       description: |
         Making payment for the selected order. Please make sure you have enough credit in the wallet for better integration.
 
-         _**NOTE**_: Please take note that **`J&T`** take some time to success compare with other courier and auto **`refund`** will trigger if order fail
+         _**NOTE**_: Please take note that **`DHL`** take some time to success compare with other courier and auto **`refund`** will trigger if order fail
       summary: POST
       parameters:
         - name: token
@@ -570,13 +616,14 @@ definitions:
         type: string
         example: "25200"
         description: |
-          * Must be malaysia postcode 
-          * Must be 5 digit postcode
+          * Must be valid postcode
+          * Postcode is based on country
       country:
         type: string
         example: "Malaysia"
         description: |
           Country Name
+          * Currently support **Malaysia** and **Singapore**
     required:
       - postcode
       - country
@@ -770,15 +817,15 @@ definitions:
         example: 25200
         description: |
           Postcode from destination
-          * Must be malaysia postcode 
-          * Must be 5 digit postcode
+          * Must be valid postcode
+          * Postcode is based on country
       destination:
         type: integer
         example: 25200
         description: |
           Postcode to destination
-          * Must be malaysia postcode 
-          * Must be 5 digit postcode
+          * Must be valid postcode
+          * Postcode is based on country
       weight:
         type: integer
         maximum: 30
@@ -789,7 +836,7 @@ definitions:
         maximum: 4000
         description: |
           Cash On Delivery Price 
-          * Only available for **DHL** and **Ninjavan**
+          * Only available for **DHL**, **Ninjavan**, **J&T** and **Flash**
       insurance:
         type: integer
         minimum: 201
@@ -802,11 +849,13 @@ definitions:
         example: Malaysia
         description: |
           From country
+          * Currently support **Malaysia** and **Singapore**
       destinationCountry:
         type: string
         example: Malaysia
         description: |
           Destination country
+          * Currently support **Malaysia** and **Singapore**
     required:
       - origin
       - originCountry
@@ -883,9 +932,19 @@ definitions:
       serviceProvider:
         type: string
         example: |
-          dhl, poslaju, ninjavan, citylink, jnt, pickupp, teleport, sfstandard, sfeconomy, flash
+          dhl
         description: |
-          Type of parcel
+          Type of parcel that support is:
+          * dhl
+          * poslaju
+          * ninjavan
+          * citylink
+          * jnt
+          * pickupp
+          * teleport
+          * sfstandard
+          * sfeconomy
+          * flash
       pickupAddress:
         type: object
         description: >-
@@ -901,16 +960,16 @@ definitions:
             type: string
             example: "+6"
             description: |
-              Sender country code 
-              * Malaysian country code format
+              Sender country code. Currently support **Malaysia** and **Singapore** 
+              * If Malaysian, country code is **+6**
+              * If Singapore, country code is **+65**
           phone:
             type: string
             minLength: 9
             maxLength: 10
             example: "171425324"
             description: |
-              Sender Phone number 
-              * Malaysian phone number format
+              Sender Phone number
           email:
             type: string
             format: email
@@ -934,26 +993,26 @@ definitions:
             type: string
             example: Kuantan
             description: |
-              Sender CIty Address 
-              * Must be malaysian city
+              Sender City Address
           postcode:
             type: string
             example: "25200"
             description: |
               Sender Postcode Address 
-              * Must be malaysia postcode 
-              * Must be 5 digit postcode
+              * Must be valid postcode
+              * Postcode is based on country
           state:
             type: string
             example: Pahang
             description: |
-              Sender State Address 
-              * Must be malaysian state
+              Sender State Address
+              * State is based on country
           country:
             type: string
             example: Malaysia
             description: |
               Sender country
+              * Currently support **Malaysia** and **Singapore**
 
         required:
           - fullName
@@ -981,16 +1040,16 @@ definitions:
             type: string
             example: "+6"
             description: |
-              Sender country code 
-              * Malaysian country code format
+              Receiver country code. Currently support **Malaysia** and **Singapore** 
+              * If Malaysian, country code is **+6**
+              * If Singapore, country code is **+65**
           phone:
             type: string
             minLength: 9
             maxLength: 10
             example: "171425324"
             description: |
-              Sender Phone number 
-              * Malaysian phone number format
+              Receiver Phone number
           email:
             type: string
             format: email
@@ -1014,26 +1073,26 @@ definitions:
             type: string
             example: Kuantan
             description: |
-              Receiver CIty Address 
-              * Must be malaysian city
+              Receiver City Address
           postcode:
             type: string
             example: "25200"
             description: |
-              Receiver Postcode Address 
-              * Must be malaysia postcode 
-              * Must be 5 digit postcode
+              Receiver Postcode Address
+              * Must be valid postcode
+              * Postcode is based on country
           state:
             type: string
             example: Pahang
             description: |
-              Receiver State Address 
-              * Must be malaysian state
+              Receiver State Address
+              * State is based on country
           country:
             type: string
             example: Malaysia
             description: |
-              Sender country
+              Receiver country
+              * Currently support **Malaysia** and **Singapore**
 
         required:
           - fullName
@@ -1072,19 +1131,19 @@ definitions:
       commodity_id:
         type: integer
         description: |
-          Parcel commudity_id value
+          Parcel commudity_id value. Can refer the id by click [here](https://www.foreign-trade.com/reference/hscode.htm)
           * Only required for **Teleport** and **SF**
       cod:
         type: integer
         description: |
           Cash On Delivery Price
-          * Only available for **DHL** , **Ninjavan** , **J&T** and **Flash**
+          * Only available for **DHL** , **Ninjavan**, **J&T** and **Flash**
       isDropoff:
         type: boolean
         description: |
           Boolean flag that indicates whether or not a drop off is required. 
           If **false**, the order will be picked up and the sender's address will be used as the pickup address.
-          * Only available for **Poslaju** , **DHL** , **Ninjavan** , **J&T** and **SF**
+          * Only available for **Poslaju** , **DHL** , **Ninjavan** and **J&T**
     required:
       - serviceProvider
       - pickupAddress
@@ -1124,6 +1183,324 @@ definitions:
       content: "Rice"
       content_value: 2
       isDropoff: false
+
+  CreateBulkOrder:
+    title: Create Bulk Order
+    type: object
+    properties:
+      success:
+        type: object
+        properties:
+          serviceProvider:
+            type: string
+            description: |
+              Type of parcel
+          merchant:
+            type: object
+            description: |
+              Merchant info
+          price:
+            type: integer
+            description: |
+              Total Price
+          content_value:
+            type: string
+            description: |
+              Value of parcel
+          receiver:
+            type: object
+            description: |
+              Receiver info
+          content:
+            type: string
+            description: |
+              Parcel discription
+          kg:
+            type: integer
+            description: |
+              Weight of parcel
+          cod:
+            type: string
+            description: |
+              COD price
+          pickup:
+            type: object
+            description: |
+              Pickup info
+          createAt:
+            type: string
+            description: |
+              Datetime of parcel created
+          updateAt:
+            type: string
+            description: |
+              Datetime of parcel created
+          objectId:
+            type: string
+            description: |
+              Order ID
+  CreateBulkOrderRequest:
+    title: Create Bulk Order Request
+    type: object
+    properties:
+      orders:
+        type: object
+        properties:
+          serviceProvider:
+            type: string
+            example: |
+              dhl, poslaju, ninjavan, citylink, jnt
+            description: |
+              Type of parcel
+          pickupAddress:
+            type: object
+            description: >-
+              Sender Address
+            properties:
+              fullName:
+                type: string
+                minLength: 3
+                example: Sam
+                description: |
+                  Sender name
+              countryCode:
+                type: string
+                example: "+6"
+                description: |
+                  Sender country code. Currently support **Malaysia** and **Singapore**
+                  * If Malaysian, country code is **+6**
+                  * If Singapore, country code is **+65**
+              phone:
+                type: string
+                minLength: 9
+                maxLength: 10
+                example: "171425324"
+                description: |
+                  Sender Phone number
+              email:
+                type: string
+                format: email
+                example: sender@test.com
+                description: |
+                  Sender email
+                  * Must be valid email address
+              line1:
+                type: string
+                maxLength: 50
+                example: No.1, Lorong A
+                description: >-
+                  Sender Line 1 Address
+              line2:
+                type: string
+                maxLength: 50
+                example: Taman A
+                description: >-
+                  Sender Line 2 Address
+              city:
+                type: string
+                example: Kuantan
+                description: |
+                  Sender CIty Address
+              postcode:
+                type: string
+                example: "25200"
+                description: |
+                  Sender Postcode Address 
+                  * Must be valid postcode
+                  * Postcode is based on country
+              state:
+                type: string
+                example: Pahang
+                description: |
+                  Sender State Address 
+                  * State is based on country
+              country:
+                type: string
+                example: Malaysia
+                description: |
+                  Sender country
+                  * Currently support **Malaysia** and **Singapore**
+
+            required:
+              - fullName
+              - countryCode
+              - phone
+              - email
+              - line1
+              - line2
+              - city
+              - postcode
+              - state
+              - country
+          clientAddress:
+            type: object
+            description: >-
+              Receiver Address id
+            properties:
+              fullName:
+                type: string
+                minLength: 3
+                example: Mex
+                description: |
+                  Receiver name
+              countryCode:
+                type: string
+                example: "+6"
+                description: |
+                  Receiver country code. Currently support **Malaysia** and **Singapore** 
+                  * If Malaysian, country code is **+6**
+                  * If Singapore, country code is **+65**
+              phone:
+                type: string
+                minLength: 9
+                maxLength: 10
+                example: "171425324"
+                description: |
+                  Receiver Phone number
+              email:
+                type: string
+                format: email
+                example: receiver@test.com
+                description: |
+                  Receiver email
+                  * Must be valid email address
+              line1:
+                type: string
+                maxLength: 50
+                example: No.1, Lorong B
+                description: >-
+                  Receiver Line 1 Address
+              line2:
+                type: string
+                maxLength: 50
+                example: Taman B
+                description: >-
+                  Receiver Line 2 Address
+              city:
+                type: string
+                example: Kuantan
+                description: |
+                  Receiver CIty Address
+              postcode:
+                type: string
+                example: "25200"
+                description: |
+                  Receiver Postcode Address
+                  * Must be valid postcode
+                  * Postcode is based on country
+              state:
+                type: string
+                example: Pahang
+                description: |
+                  Receiver State Address
+                  * State is based on country
+              country:
+                type: string
+                example: Malaysia
+                description: |
+                  Receiver country
+                  * Currently support **Malaysia** and **Singapore**
+
+            required:
+              - fullName
+              - countryCode
+              - phone
+              - email
+              - line1
+              - line2
+              - city
+              - postcode
+              - state
+              - country
+          kg:
+            type: integer
+            description: |
+              Weight of parcel
+          insurance:
+            type: integer
+            minimum: 201
+            maximum: 2000
+            description: |
+              Insurance value for the parcel 
+              * Only available for **DHL** , **Ninjavan** and **JNT**
+          price:
+            type: integer
+            description: >-
+              Get the price from quotation api
+          content:
+            type: string
+            maxLength: 50
+            example: book
+            description: |
+              Pracel detail description
+          content_value:
+            type: integer
+            description: >-
+              Parcel detail value
+          commodity_id:
+            type: integer
+            description: |
+              Parcel commudity_id value. Can refer the id by click [here](https://www.foreign-trade.com/reference/hscode.htm)
+              * Only required for **Teleport** and **SF**
+          cod:
+            type: integer
+            description: |
+              Cash On Delivery Price
+              * Only available for **DHL** , **Ninjavan**, **J&T** and **Flash**
+          isDropoff:
+            type: boolean
+            description: |
+              Boolean flag that indicates whether or not a drop off is required. 
+              If **false**, the order will be picked up and the sender's address will be used as the pickup address.
+              * Only available for **Poslaju** , **DHL** , **Ninjavan** and **J&T**
+        required:
+          - serviceProvider
+          - pickupAddress
+          - clientAddress
+          - kg
+          - price
+          - content
+          - content_value
+          - isDropoff
+    example:
+      orders:
+        [
+          {
+            serviceProvider: "dhl",
+            pickupAddress:
+              {
+                fullName: "Sam",
+                countryCode: "+6",
+                phone: "171414521",
+                email: "sender@test.com",
+                line1: "No.1, Lorong A",
+                line2: "Taman A",
+                city: "Kuantan",
+                postcode: "25200",
+                state: "Pahang",
+                country: "Malaysia",
+              },
+            clientAddress:
+              {
+                fullName: "Mex",
+                countryCode: "+6",
+                phone: "171414521",
+                email: "receiver@test.com",
+                line1: "No.1, Lorong B",
+                line2: "Taman B",
+                city: "Kuantan",
+                postcode: "25200",
+                state: "Pahang",
+                country: "Malaysia",
+              },
+            kg: 2,
+            price: 6.5,
+            commodity_id: 1006,
+            content: "Rice",
+            content_value: 2,
+            isDropoff: false,
+          },
+        ]
 
   PayOrder:
     title: Pay All Order
