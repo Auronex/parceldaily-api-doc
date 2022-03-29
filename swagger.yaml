@@ -561,6 +561,61 @@ paths:
               error: "Unauthorized"
               message: "Secret key must be provided"
 
+  /v1/partner/flashNotify/:
+    x-summary: Notify Flash Courier
+    post:
+      description: >-
+        Notify flash courier to pickup the parcel.
+      summary: POST
+      parameters:
+        - name: token
+          in: header
+          description: a account secret
+          required: true
+          type: string
+        - name: merchantid
+          in: header
+          description: a account id
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/FlashNotifyResponse"
+      responses:
+        200:
+          description: "Successfully Responses result"
+          schema:
+            $ref: "#/definitions/FlashNotify"
+          examples:
+            application/json:
+              order:
+                {
+                  code: 1,
+                  message: "success",
+                  data:
+                    {
+                      ticketPickupID: 192508,
+                      staffInfoId: 121890,
+                      staffInfoName: "Badrul",
+                      staffInfoPhone: "0174121412",
+                      upCountryNote: null,
+                      timeoutAtText: "tomorrow 14:00 ~ 16:00",
+                      ticketMessage: "The courier may not be able to arrive on time",
+                      notice: null,
+                    },
+                }
+
+        401:
+          description: "Unauthorized Responses result"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              error: "Unauthorized"
+              message: "Secret key must be provided"
+
   /v1/partner/getpl9:
     x-summary: Download PL9 form
     get:
@@ -1584,6 +1639,123 @@ definitions:
       - connote
     example:
       connote: NVMYAXVEL000001063
+
+  FlashNotify:
+    title: Flash Notify Response
+    type: object
+    properties:
+      orders:
+        type: object
+        description: >-
+          Response detail
+        properties:
+          code:
+            type: string
+            description: >-
+              Response code
+          message:
+            type: string
+            description: >-
+              Response message
+          data:
+            type: object
+            description: >-
+              Pickup info
+            properties:
+              ticketPickupId:
+                type: string
+                description: >-
+                  Pickup ID
+              staffInfoId:
+                type: string
+                description: >-
+                  Driver ID
+              staffInfoName:
+                type: string
+                description: >-
+                  Drive name
+              staffInfoPhone:
+                type: string
+                description: >-
+                  Drive phone number
+              upCountryNote:
+                type: string
+                description: >-
+                  Country note from flash courier
+              timeoutAtText:
+                type: string
+                description: >-
+                  Time for flash courier pickup
+              ticketMessage:
+                type: string
+                description: >-
+                  Message from flash courier
+              notice:
+                type: string
+                description: >-
+                  Notice
+  FlashNotifyResponse:
+    title: Flash Notify Request
+    type: object
+    properties:
+      name:
+        type: string
+        example: Ali
+        description: >-
+          Pickup location contact name
+      phone:
+        type: string
+        example: "+60174547414"
+        description: >-
+          Pickup location contact name number
+      addressLine:
+        type: string
+        example: Unit A-28-03, Aurora Residences
+        description: >-
+          Pickup location detail address
+      postcode:
+        type: string
+        example: "47150"
+        description: >-
+          Pickup location postcode
+      city:
+        type: string
+        example: Puchong
+        description: >-
+          Pickup location city
+      state:
+        type: string
+        example: Selangor
+        description: >-
+          Pickup location state
+      quantity:
+        type: number
+        example: 1
+        description: >-
+          Estimated parcels quantity to pickup
+      remark:
+        type: string
+        example: Call when arrive
+        description: >-
+          Remark
+    required:
+      - name
+      - phone
+      - addressLine
+      - postcode
+      - city
+      - state
+      - quantity
+      - remark
+    example:
+      name: Ali
+      phone: "+60174547414"
+      addressLine: Unit A-28-03, Aurora Residences
+      postcode: 47150
+      city: Puchong
+      state: Selangor
+      quantity: 2
+      remark: Call when arrive
 
   Error:
     type: object
