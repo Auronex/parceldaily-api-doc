@@ -955,7 +955,11 @@ definitions:
           content:
             type: string
             description: |
-              Parcel discription
+              Parcel description
+          reference:
+            type: string
+            description: |
+              Parcel reference
           kg:
             type: integer
             description: |
@@ -1178,7 +1182,7 @@ definitions:
         maxLength: 50
         example: book
         description: |
-          Pracel detail description
+          Parcel detail description
       content_value:
         type: integer
         description: >-
@@ -1199,6 +1203,10 @@ definitions:
           Boolean flag that indicates whether or not a drop off is required. 
           If **false**, the order will be picked up and the sender's address will be used as the pickup address.
           * Only available for **Poslaju** , **DHL** , **Ninjavan** and **J&T**
+      Reference:
+        type: string
+        description: |
+          Parcel reference
     required:
       - serviceProvider
       - pickupAddress
@@ -1269,7 +1277,11 @@ definitions:
           content:
             type: string
             description: |
-              Parcel discription
+              Parcel description
+          reference:
+            type: string
+            description: |
+              Parcel reference
           kg:
             type: integer
             description: |
@@ -1492,6 +1504,10 @@ definitions:
             type: integer
             description: >-
               Parcel detail value
+          reference:
+            type: string
+            description: |
+              Parcel reference
           commodity_id:
             type: integer
             description: |
