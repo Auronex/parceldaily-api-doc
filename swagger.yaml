@@ -532,6 +532,11 @@ paths:
           description: a account secret
           required: true
           type: string
+        - name: merchantid
+          in: header
+          description: a account id
+          required: true
+          type: string
         - name: body
           in: body
           required: true
@@ -552,6 +557,45 @@ paths:
           #           lastUpdateStatus: "2021-04-20T10:14:06.476Z"
           #         }
           #       ]
+        401:
+          description: "Unauthorized Responses result"
+          schema:
+            $ref: "#/definitions/Error"
+          examples:
+            application/json:
+              error: "Unauthorized"
+              message: "Secret key must be provided"
+
+  /v1/partner/bulk-consign-pdf/:
+    x-summary: Bulk Download Consignment Note
+    post:
+      description: |
+        Making bulk download for the selected order.
+      summary: POST
+      parameters:
+        - name: token
+          in: header
+          description: a account secret
+          required: true
+          type: string
+        - name: merchantid
+          in: header
+          description: a account id
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/BulkDownloadConnoteRequest"
+      responses:
+        200:
+          description: "Successfully Responses result"
+          # schema:
+          #   $ref: "#/definitions/BulkDownloadConnote"
+          # examples:
+          #   application/json:
+          #     success: [{ "orderId": "sfMeOuzvtK", "connote": "63125215258MY" }]
         401:
           description: "Unauthorized Responses result"
           schema:
@@ -1162,6 +1206,61 @@ definitions:
           - city
           - postcode
           - state
+      isMult:
+        type: boolean
+        description: |
+          Boolean flag that indicates whether or not a pieces is required.
+          * Only available for **DHL** and related with **pieces**
+      pieces:
+        type: object
+        description: |
+          The pieces of product
+          * Only available for **DHL** and **isMult** must be **true**
+        properties:
+          pieceID:
+            type: integer
+            minLength: 3
+            example: 1
+            description: |
+              The id of pieces
+          announcedWeight:
+            type: object
+            description: >-
+              Weight Detail
+            properties:
+              weight:
+                type: integer
+                example: 2
+                description: |
+                  Weight of parcel
+              unit:
+                type: string
+                example: "KG"
+                description: |
+                  The weight unit
+          billingReference1:
+            type: string
+            example: "Parcel Daily"
+            description: |
+              Parcel billing reference 1
+          billingReference2:
+            type: string
+            example: "Test Product"
+            description: |
+              Parcel billing reference 2
+          pieceDescription:
+            type: string
+            maxLength: 50
+            example: Skin Care
+            description: >-
+              Parcel detail description
+
+        required:
+          - pieceID
+          - announcedWeight
+          - billingReference1
+          - billingReference2
+          - pieceDescription
       kg:
         type: integer
         description: |
@@ -1240,6 +1339,20 @@ definitions:
         postcode: "25200"
         state: "Pahang"
         country: "Malaysia"
+      isMult: true
+      pieces:
+        [
+          {
+            pieceID: 1,
+            announcedWeight: {
+                weight: 1000,
+                unit: "KG"
+            },
+            billingReference1: "Parcel Daily",
+            billingReference2: "Test Product",
+            pieceDescription: "Skin Care"
+          },
+        ]
       kg: 2
       price: 6.5
       commodity_id: 1006
@@ -1655,6 +1768,27 @@ definitions:
       - connote
     example:
       connote: NVMYAXVEL000001063
+  
+  BulkDownloadConnote:
+    title: Bulk Download Connote
+    type: object
+    properties:
+      success:
+        type: array
+        description: >-
+          List of order id that want to download connote
+  BulkDownloadConnoteRequest:
+    title: Bulk Download Connote Request
+    type: object
+    properties:
+      orderIds:
+        type: array
+        description: >-
+          Order Id that want to download connote
+    required:
+      - orderIds
+    example:
+      orderIds: [sfMeOuzvtK]
 
   FlashNotify:
     title: Flash Notify Response
