@@ -347,12 +347,42 @@ paths:
             $ref: "#/definitions/CreateBulkOrder"
           examples:
             application/json:
-              success: ["aRG2YKxltx", "C4iFNBzXeW"]
+              success: [
+                         {
+                           "orderId"  : "aRG2YKxltx",
+                           "reference": "ref290180"                           
+                         },
+                         {
+                           "orderId"  : "bRG9YKyyxz",
+                           "reference": "ref371740"
+                         }                         
+                       ],
+              fail:    [
+                          { 
+                            "orderNo"  : 4,
+                            "reference": "refD99",
+                            "message"  : [
+                              "Duplicate references found in Order number: 5.",
+                              "Reference has been taken by Order #w7AlIhmBek"
+                            ]
+                          },
+                          { 
+                            "orderNo"  : 5,
+                            "reference": "refD99",
+                            "message"  : "Duplicate references found in Order number: 4."                            
+                          }
+                       ]
         422:
           description: "Server calculated price does not match submitted price"
           examples:
             application/json:
-              error: {}
+              fail:  [
+                          { 
+                            "orderNo"  : 1,
+                            "reference": "refD99",
+                            "message"  : "Server calculated price does not match submitted price"
+                          }
+                     ]
         401:
           description: "Unauthorized Responses result"
           schema:
@@ -393,7 +423,13 @@ paths:
             $ref: "#/definitions/PayOrder"
           examples:
             application/json:
-              success: [{ "orderId": "sfMeOuzvtK", "connote": "63125215258MY" }]
+              success: [
+                        { 
+                          "orderId"   : "sfMeOuzvtK", 
+                          "connote"   : "63125215258MY",
+                          "reference" : "ref673wzh"
+                        }
+                       ]
         500:
           description: "Object not found"
           examples:
