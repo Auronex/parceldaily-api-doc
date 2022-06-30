@@ -347,40 +347,42 @@ paths:
             $ref: "#/definitions/CreateBulkOrder"
           examples:
             application/json:
-              success:
-                [
-                  { "orderId": "aRG2YKxltx", "reference": "ref290180" },
-                  { "orderId": "bRG9YKyyxz", "reference": "ref371740" },
-                ]
-              fail:
-                [
-                  {
-                    "orderNo": 4,
-                    "reference": "refD99",
-                    "message":
-                      [
-                        "Duplicate references found in Order number: 5.",
-                        "Reference has been taken by Order #w7AlIhmBek",
-                      ],
-                  },
-                  {
-                    "orderNo": 5,
-                    "reference": "refD99",
-                    "message": "Duplicate references found in Order number: 4.",
-                  },
-                ]
+              success: [
+                         {
+                           "orderId"  : "aRG2YKxltx",
+                           "reference": "ref290180"                           
+                         },
+                         {
+                           "orderId"  : "bRG9YKyyxz",
+                           "reference": "ref371740"
+                         }                         
+                       ]
+              fail:    [
+                          { 
+                            "orderNo"  : 4,
+                            "reference": "refD99",
+                            "message"  : [
+                              "Duplicate references found in Order number: 5.",
+                              "Reference has been taken by Order #w7AlIhmBek"
+                            ]
+                          },
+                          { 
+                            "orderNo"  : 5,
+                            "reference": "refD99",
+                            "message"  : "Duplicate references found in Order number: 4."                            
+                          }
+                       ]
         422:
           description: "Server calculated price does not match submitted price"
           examples:
             application/json:
-              fail:
-                [
-                  {
-                    "orderNo": 1,
-                    "reference": "refD99",
-                    "message": "Server calculated price does not match submitted price",
-                  },
-                ]
+              fail:  [
+                          { 
+                            "orderNo"  : 1,
+                            "reference": "refD99",
+                            "message"  : "Server calculated price does not match submitted price"
+                          }
+                     ]
         401:
           description: "Unauthorized Responses result"
           schema:
@@ -394,7 +396,9 @@ paths:
     x-summary: Checkout Order
     post:
       description: |
-        Making payment for the selected order. Please make sure you have enough credit in the wallet for better integration.
+        Making payment for the selected order. Please make sure you have enough credit in the wallet for better integration.  
+          
+        Returns Order IDs that have been received by us and under processing. Upon processing completion, webhooks will be sent to configured endpoint to update the Checkout status for each Order.
 
          _**NOTE**_: Please take note that **`DHL`** take some time to success compare with other courier and auto **`refund`** will trigger if order fail
       summary: POST
@@ -421,14 +425,12 @@ paths:
             $ref: "#/definitions/PayOrder"
           examples:
             application/json:
-              success:
-                [
-                  {
-                    "orderId": "sfMeOuzvtK",
-                    "connote": "63125215258MY",
-                    "reference": "ref673wzh",
-                  },
+              success: {
+                "orderIds": [
+                  "sfMeOuzvtK"
                 ]
+              }
+
         500:
           description: "Object not found"
           examples:
@@ -1395,10 +1397,13 @@ definitions:
         [
           {
             pieceID: 1,
-            announcedWeight: { weight: 1000, unit: "KG" },
+            announcedWeight: {
+                weight: 1000,
+                unit: "KG"
+            },
             billingReference1: "Parcel Daily",
             billingReference2: "Test Product",
-            pieceDescription: "Skin Care",
+            pieceDescription: "Skin Care"
           },
         ]
       kg: 2
@@ -1741,7 +1746,7 @@ definitions:
       success:
         type: array
         description: >-
-          List of order id that successfully pay
+          List of order id that are received and under processing
   PayOrderRequest:
     title: Get All Order Request
     type: object
@@ -1816,7 +1821,7 @@ definitions:
       - connote
     example:
       connote: NVMYAXVEL000001063
-
+  
   BulkDownloadConnote:
     title: Bulk Download Connote
     type: object
